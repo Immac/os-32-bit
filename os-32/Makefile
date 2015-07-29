@@ -13,6 +13,7 @@ all: os-image
 
 # Run bochs to simulate booting of our code.
 run: all
+	#./prepare-hd1-with-kernel.elf.sh
 	bochs -f opsys.bxrc -q
 
 os-image: kernel.elf

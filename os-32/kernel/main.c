@@ -10,4 +10,8 @@ void main(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
     idt_init();
     irq_init();
     isrs_init();
+
+    while(1) {
+     puts("Reimu Hakurei");
+    }
 }
