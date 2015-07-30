@@ -1,0 +1,1 @@
+sudo /sbin/losetup -d /dev/loop1
