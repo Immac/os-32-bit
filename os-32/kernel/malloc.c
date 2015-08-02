@@ -1,13 +1,14 @@
 #include <malloc.h>
 #include <system.h>
-
+#include <screen.h>
 static union Header base;
 static union Header *freep = NULL;
 
-void *malloc(uint32_t nBytes)
+void *malloc(size_t nBytes)
 {
     union Header *p, *prevp;
     uint32_t nUnits;
+    kprintf("size: %x\n",nBytes);
     nUnits = (nBytes + sizeof(union Header) - 1)/sizeof(union Header) + 1;
 
     if ((prevp = freep) == NULL ) {
@@ -20,15 +21,17 @@ void *malloc(uint32_t nBytes)
             if (p->s.size == nUnits)
                 prevp->s.ptr = p->s.ptr;
             else {
-                prevp->s.size -= nUnits;
+                p->s.size -= nUnits;
                 p += p->s.size;
                 p->s.size = nUnits;
             }
             freep = prevp;
+            kprintf("p: %p\n",p);
+            kprintf("freep: %p\n",freep);
             return (void*)(p + 1);
         }
         if (p == freep)
-            if ((p = mm_alloc_frames(nUnits)) == NULL)
+            if ((p = moreCore(nUnits)) == NULL)
                 return NULL;
     }
 }

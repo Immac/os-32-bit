@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   system.h
  * Author: ideras
  *
@@ -43,7 +43,7 @@ struct multiboot_info {
         uint32_t addr;
         uint32_t shndx;
     } elf_sec;
-    
+
     unsigned long mmap_length;
     unsigned long mmap_addr;
     unsigned long drives_length;

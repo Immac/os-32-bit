@@ -14,5 +14,5 @@ union Header {
 
 static union Header *moreCore(uint32_t nUnits);
 void free(void *ap);
-void *malloc(uint32_t nBytes);
+void *malloc(size_t nBytes);
 #endif // MALLOC_H_INCLUDED
