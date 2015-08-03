@@ -33,12 +33,19 @@ void main(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
     mm_mark_region_used(KERNEL_BASE_ADDR, kernelSize + mm_get_bitmap_size());
 
     uint32_t *p = malloc(sizeof(p));
-    kprintf("p1: %p\n",p);
+    kprintf("\tp1: %p\n",p);
     uint32_t *p2 = malloc(sizeof(p2));
     kprintf("p2: %p\n",p2);
-        uint32_t *p3 = malloc(sizeof(p3));
+      uint32_t *p3 = malloc(sizeof(p3));
     kprintf("p3: %p\n",p3);
         uint32_t *p4 = malloc(sizeof(p4));
+        *p4 = 10;
     kprintf("p4: %p\n",p4);
+    kprintf("*p4: %u\n",*p4);
+        free(p4);
+    uint32_t *p5 = malloc(sizeof(p5));
+    kprintf("p5: %p\n",p5);
+    kprintf("*p5: %u\n",*p5);
         while(1);
+
     }

@@ -7,16 +7,19 @@ static union Header *freep = NULL;
 void *malloc(size_t nBytes)
 {
     union Header *p, *prevp;
-    uint32_t nUnits;
-    kprintf("size: %x\n",nBytes);
-    nUnits = (nBytes + sizeof(union Header) - 1)/sizeof(union Header) + 1;
+    unsigned int nUnits;
+    union Header *moreCore(unsigned int nUnits);
+    unsigned int toAlignmentUnits(unsigned int nBytes);
+
+    nUnits = toAlignmentUnits(nBytes);
 
     if ((prevp = freep) == NULL ) {
         base.s.ptr = freep = prevp = &base;
         base.s.size = 0;
     }
 
-    for (p = prevp->s.ptr; ; prevp = p, p = p->s.ptr) {
+    for (p = prevp->s.ptr ;; prevp = p, p = p->s.ptr) {
+        kprintf("p->s.size A: %u\n",p->s.size);
         if (p->s.size >= nUnits) {
             if (p->s.size == nUnits)
                 prevp->s.ptr = p->s.ptr;
@@ -27,26 +30,32 @@ void *malloc(size_t nBytes)
             }
             freep = prevp;
             kprintf("p: %p\n",p);
-            kprintf("freep: %p\n",freep);
+
+        kprintf("freep: %p\n",freep);
+
             return (void*)(p + 1);
         }
         if (p == freep)
+        {
             if ((p = moreCore(nUnits)) == NULL)
                 return NULL;
+        }
     }
 }
 
-static union Header *moreCore(uint32_t nUnits) {
+union Header *moreCore(unsigned int nUnits) {
     char *cp;
     union Header *up;
+    unsigned int alignmentUnitsToFrames(unsigned int nUnits);
+    unsigned int framesToAlignmentUnits(unsigned int frames);
 
-    if(nUnits < NALLOC)
-        nUnits = NALLOC;
-    cp = (char *)mm_alloc_frames(nUnits * sizeof(union Header));
+    unsigned int nFrames = alignmentUnitsToFrames(nUnits);
+    cp = mm_alloc_frames(nFrames);
     if (cp == (char *) -1)
         return NULL;
     up = (union Header *) cp;
-    up->s.size = nUnits;
+    up->s.size = framesToAlignmentUnits(nFrames);
+
     free( (void *) (up + 1) );
     return freep;
 }
@@ -70,4 +79,17 @@ void free(void *ap) {
     } else
         p->s.ptr = bp;
     freep = p;
+}
+
+/*nUnits to frames*/
+unsigned int alignmentUnitsToFrames(size_t nUnits) {
+    return (nUnits * sizeof(union Header))/MALLOC_BLOCK_SIZE + 1;
+}
+
+unsigned int toAlignmentUnits(unsigned int nBytes) {
+    return (nBytes + sizeof(union Header) - 1)/sizeof(union Header) + 1;
+}
+
+unsigned int framesToAlignmentUnits(unsigned int frames) {
+    return frames * MALLOC_BLOCK_SIZE / sizeof(Align);
 }
