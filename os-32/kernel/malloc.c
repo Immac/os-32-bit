@@ -19,7 +19,7 @@ void *malloc(size_t nBytes)
     }
 
     for (p = prevp->s.ptr ;; prevp = p, p = p->s.ptr) {
-        kprintf("p->s.size A: %u\n",p->s.size);
+       // kprintf("p->s.size A: %u\n",p->s.size);
         if (p->s.size >= nUnits) {
             if (p->s.size == nUnits)
                 prevp->s.ptr = p->s.ptr;
@@ -29,9 +29,9 @@ void *malloc(size_t nBytes)
                 p->s.size = nUnits;
             }
             freep = prevp;
-            kprintf("p: %p\n",p);
+      //      kprintf("p: %p\n",p);
 
-        kprintf("freep: %p\n",freep);
+    //    kprintf("freep: %p\n",freep);
 
             return (void*)(p + 1);
         }
@@ -48,8 +48,8 @@ union Header *moreCore(unsigned int nUnits) {
     union Header *up;
     unsigned int alignmentUnitsToFrames(unsigned int nUnits);
     unsigned int framesToAlignmentUnits(unsigned int frames);
-
     unsigned int nFrames = alignmentUnitsToFrames(nUnits);
+    kprintf("Additional memory is required!");
     cp = mm_alloc_frames(nFrames);
     if (cp == (char *) -1)
         return NULL;

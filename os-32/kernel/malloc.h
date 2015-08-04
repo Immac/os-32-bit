@@ -3,7 +3,7 @@
 #include <types.h>
 #define NALLOC 1024
 #define MALLOC_BLOCK_SIZE	4096
-typedef long long Align;
+typedef long Align;
 
 union Header {
     struct {

@@ -29,13 +29,13 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support: vbe 
-00000000000i[MEM0 ] allocated memory at 0x2b4262be5010. after alignment, vector=0x2b4262be6000
+00000000000i[MEM0 ] allocated memory at 0x2b84068f6010. after alignment, vector=0x2b84068f7000
 00000000000i[MEM0 ] 32.00MB
 00000000000i[MEM0 ] mem block size = 0x00100000, blocks=32
 00000000000i[MEM0 ] rom at 0xfffe0000/131072 ('/usr/local/share/bochs/BIOS-bochs-latest')
 00000000000e[DEV  ] Bochs is not compiled with PCI support
 00000000000i[CMOS ] Using local time for initial clock
-00000000000i[CMOS ] Setting initial clock to: Sun Aug  2 23:14:44 2015 (time0=1438578884)
+00000000000i[CMOS ] Setting initial clock to: Mon Aug  3 20:36:08 2015 (time0=1438655768)
 00000000000i[DMA  ] channel 4 used by cascade
 00000000000i[DMA  ] channel 2 used by Floppy Drive
 00000000000i[MEM0 ] Register memory access handlers: 0x00000000000a0000 - 0x00000000000bffff
@@ -102,40 +102,40 @@
 00000000000i[     ] reset of 'parallel' plugin device by virtual method
 00000000000i[     ] set SIGINT handler to bx_debug_ctrlc_handler
 00000004855i[BIOS ] $Revision: 10789 $ $Date: 2011-11-24 17:03:51 +0100 (Do, 24. Nov 2011) $
-00000327566i[KBD  ] reset-disable command received
-00000333314i[BIOS ] Starting rombios32
-00000333761i[BIOS ] Shutdown flag 0
-00000334371i[BIOS ] ram_size=0x02000000
-00000334806i[BIOS ] ram_end=32MB
-00000434846i[BIOS ] Found 1 cpu(s)
-00000451100i[BIOS ] bios_table_addr: 0x000fbde8 end=0x000fcc00
-00000463670i[BIOS ] bios_table_cur_addr: 0x000fbde8
-00000591288i[VBIOS] VGABios $Id: vgabios.c,v 1.75 2011/10/15 14:07:21 vruppert Exp $
-00000591359i[BXVGA] VBE known Display Interface b0c0
-00000591391i[BXVGA] VBE known Display Interface b0c5
-00000594316i[VBIOS] VBE Bios $Id: vbe.c,v 1.64 2011/07/19 18:25:05 vruppert Exp $
-00000940289i[BIOS ] ata0-0: PCHS=40/16/32 translation=none LCHS=40/16/32
-00004820296i[BIOS ] IDE time out
-00034633757i[BIOS ] Booting from 0000:7c00
-00034913119i[BIOS ] int13_harddisk: function 41, unmapped device for ELDL=81
-00034917896i[BIOS ] int13_harddisk: function 08, unmapped device for ELDL=81
-00034922546i[BIOS ] *** int 15h function AX=00c0, BX=0000 not yet supported!
-16101220000p[SDL  ] >>PANIC<< User requested shutdown.
-16101220000i[CPU0 ] CPU is in protected mode (active)
-16101220000i[CPU0 ] CS.mode = 32 bit
-16101220000i[CPU0 ] SS.mode = 32 bit
-16101220000i[CPU0 ] | EAX=00000000  EBX=00001fc8  ECX=000b8f00  EDX=000003d4
-16101220000i[CPU0 ] | ESP=00105fd0  EBP=00105ff0  ESI=00032120  EDI=0003227c
-16101220000i[CPU0 ] | IOPL=0 id vip vif ac vm rf nt of df if tf sf zf af pf cf
-16101220000i[CPU0 ] | SEG sltr(index|ti|rpl)     base    limit G D
-16101220000i[CPU0 ] |  CS:0008( 0001| 0|  0) 00000000 ffffffff 1 1
-16101220000i[CPU0 ] |  DS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-16101220000i[CPU0 ] |  SS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-16101220000i[CPU0 ] |  ES:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-16101220000i[CPU0 ] |  FS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-16101220000i[CPU0 ] |  GS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-16101220000i[CPU0 ] | EIP=00100d30 (00100d30)
-16101220000i[CPU0 ] | CR0=0x60000011 CR2=0x00000000
-16101220000i[CPU0 ] | CR3=0x00000000 CR4=0x00000000
-16101220000i[CMOS ] Last time is 1438580494 (Sun Aug  2 23:41:34 2015)
-16101220000i[CTRL ] quit_sim called with exit code 1
+00000330051i[KBD  ] reset-disable command received
+00000335837i[BIOS ] Starting rombios32
+00000336284i[BIOS ] Shutdown flag 0
+00000336894i[BIOS ] ram_size=0x02000000
+00000337329i[BIOS ] ram_end=32MB
+00000437393i[BIOS ] Found 1 cpu(s)
+00000453647i[BIOS ] bios_table_addr: 0x000fbde8 end=0x000fcc00
+00000466217i[BIOS ] bios_table_cur_addr: 0x000fbde8
+00000593835i[VBIOS] VGABios $Id: vgabios.c,v 1.75 2011/10/15 14:07:21 vruppert Exp $
+00000593906i[BXVGA] VBE known Display Interface b0c0
+00000593938i[BXVGA] VBE known Display Interface b0c5
+00000596863i[VBIOS] VBE Bios $Id: vbe.c,v 1.64 2011/07/19 18:25:05 vruppert Exp $
+00000942836i[BIOS ] ata0-0: PCHS=40/16/32 translation=none LCHS=40/16/32
+00004823128i[BIOS ] IDE time out
+00034633754i[BIOS ] Booting from 0000:7c00
+00034913116i[BIOS ] int13_harddisk: function 41, unmapped device for ELDL=81
+00034917893i[BIOS ] int13_harddisk: function 08, unmapped device for ELDL=81
+00034922543i[BIOS ] *** int 15h function AX=00c0, BX=0000 not yet supported!
+00141920000p[SDL  ] >>PANIC<< User requested shutdown.
+00141920000i[CPU0 ] CPU is in protected mode (active)
+00141920000i[CPU0 ] CS.mode = 32 bit
+00141920000i[CPU0 ] SS.mode = 32 bit
+00141920000i[CPU0 ] | EAX=00002048  EBX=00000401  ECX=00000008  EDX=00002040
+00141920000i[CPU0 ] | ESP=00104d10  EBP=00105ff0  ESI=00104d48  EDI=0003227c
+00141920000i[CPU0 ] | IOPL=0 id vip vif ac vm rf nt of df if tf sf ZF af PF cf
+00141920000i[CPU0 ] | SEG sltr(index|ti|rpl)     base    limit G D
+00141920000i[CPU0 ] |  CS:0008( 0001| 0|  0) 00000000 ffffffff 1 1
+00141920000i[CPU0 ] |  DS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00141920000i[CPU0 ] |  SS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00141920000i[CPU0 ] |  ES:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00141920000i[CPU0 ] |  FS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00141920000i[CPU0 ] |  GS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00141920000i[CPU0 ] | EIP=00100cc8 (00100cc8)
+00141920000i[CPU0 ] | CR0=0x60000011 CR2=0x00000000
+00141920000i[CPU0 ] | CR3=0x00000000 CR4=0x00000000
+00141920000i[CMOS ] Last time is 1438655782 (Mon Aug  3 20:36:22 2015)
+00141920000i[CTRL ] quit_sim called with exit code 1

@@ -27,12 +27,32 @@ void main(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
     mmap_ptr = (multiboot_memory_map_t*) ((uint32_t) mmap_ptr + mmap_ptr->size + sizeof (uint32_t));
     }
 
-
-
     unsigned int kernelSize = kernel_end_addr - KERNEL_BASE_ADDR;
     mm_mark_region_used(KERNEL_BASE_ADDR, kernelSize + mm_get_bitmap_size());
 
-    uint32_t *p = malloc(sizeof(p));
+    int *integers[1200];
+    //moreCore is called at least once when the first malloc is called as the linked list is not yet created at that point.
+    for (int i = 0; i < 513; i++) { //just enought to generate a need for morecore
+        integers[i] = malloc(sizeof (int*));
+        *integers[i] = i;
+    }
+
+    for (int i = 5; i < 10; i++) { // if this is remove moreCore will be called 3 times
+        free(integers[i]);
+    }
+
+    for (int i = 513; i < 1025; i++) { //should not require more mwmoey because of the freed space
+        integers[i] = malloc(sizeof (int*));
+        *integers[i] = i;
+    }
+
+//you can test where memory is being allocated with this code.
+    /*for (int i = 0; i < 1200; i++) {
+        kprintf("value: %u", *integers[i]);
+    }
+    */
+
+    /*uint32_t *p = malloc(sizeof(p));
     kprintf("\tp1: %p\n",p);
     uint32_t *p2 = malloc(sizeof(p2));
     kprintf("p2: %p\n",p2);
@@ -44,8 +64,11 @@ void main(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
     kprintf("*p4: %u\n",*p4);
         free(p4);
     uint32_t *p5 = malloc(sizeof(p5));
+    char* car = malloc((size_t)100);
+    kprintf("car: %p\n",car);
     kprintf("p5: %p\n",p5);
     kprintf("*p5: %u\n",*p5);
+*/
         while(1);
 
     }
