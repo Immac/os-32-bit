@@ -45,6 +45,10 @@
 		<Unit filename="drivers/ide.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="drivers/keyboard.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="drivers/keyboard.h" />
 		<Unit filename="drivers/screen.c">
 			<Option compilerVar="CC" />
 		</Unit>

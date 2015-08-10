@@ -13,6 +13,8 @@ all: os-image
 
 # Run bochs to simulate booting of our code.
 run: all
+	echo "Make sure /media/immac/1788-59D0 is accessible"
+	sudo cp kernel.elf /media/immac/1788-59D0
 	bochs -f opsys.bxrc -q
 
 os-image: kernel.elf

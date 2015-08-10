@@ -1,0 +1,19 @@
+
+int *integers[1200];
+//moreCore is called at least once when the first malloc is called as the linked list is not yet created at that point.
+for (int i = 0; i < 513; i++) //just enought to generate a need for morecore
+{
+	integers[i] = malloc(sizeof (int*));
+	*integers[i] = i;
+}
+
+for (int i = 5; i < 10; i++) // if this is remove moreCore will be called 3 times
+{
+	free(integers[i]);
+}
+
+for (int i = 513; i < 1025; i++) //should not require more mwmoey because of the freed space
+{
+	integers[i] = malloc(sizeof (int*));
+	*integers[i] = i;
+}
