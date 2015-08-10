@@ -1,5 +1,6 @@
 #include <system.h>
 #include <screen.h>
+#include <keyboard.h>
 #include <low_level.h>
 #include <malloc.h>
 
@@ -11,7 +12,6 @@ void main(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
     kprintf("Hello World.");
     while(1);
 }
-
 
 void initialize_kernel(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
 {
