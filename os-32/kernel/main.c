@@ -1,16 +1,20 @@
 #include <system.h>
 #include <screen.h>
-#include <keyboard.h>
 #include <low_level.h>
 #include <malloc.h>
+#include <keyboard.h>
 
 void initialize_kernel(struct multiboot_info *mbinfo, uint32_t kernel_end_addr);
 
 void main(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
 {
     initialize_kernel(mbinfo,kernel_end_addr);
-    kprintf("Hello World.");
-    while(1);
+    kprintf("MikOS II");
+    int x = 5%2;
+    sti();
+    while(1)
+    {
+    }
 }
 
 void initialize_kernel(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
@@ -41,4 +45,5 @@ void initialize_kernel(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
 
     unsigned int kernelSize = kernel_end_addr - KERNEL_BASE_ADDR;
     mm_mark_region_used(KERNEL_BASE_ADDR, kernelSize + mm_get_bitmap_size());
+    irq_install_handler(1,keyboard_handler);
 }

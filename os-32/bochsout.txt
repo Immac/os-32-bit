@@ -29,13 +29,13 @@
 00000000000i[     ]   SB16 support: no
 00000000000i[     ]   USB support: no
 00000000000i[     ]   VGA extension support: vbe 
-00000000000i[MEM0 ] allocated memory at 0x2b3ad496c010. after alignment, vector=0x2b3ad496d000
+00000000000i[MEM0 ] allocated memory at 0x2b62f1036010. after alignment, vector=0x2b62f1037000
 00000000000i[MEM0 ] 32.00MB
 00000000000i[MEM0 ] mem block size = 0x00100000, blocks=32
 00000000000i[MEM0 ] rom at 0xfffe0000/131072 ('/usr/local/share/bochs/BIOS-bochs-latest')
 00000000000e[DEV  ] Bochs is not compiled with PCI support
 00000000000i[CMOS ] Using local time for initial clock
-00000000000i[CMOS ] Setting initial clock to: Sun Aug  9 22:27:35 2015 (time0=1439180855)
+00000000000i[CMOS ] Setting initial clock to: Thu Aug 13 17:31:08 2015 (time0=1439508668)
 00000000000i[DMA  ] channel 4 used by cascade
 00000000000i[DMA  ] channel 2 used by Floppy Drive
 00000000000i[MEM0 ] Register memory access handlers: 0x00000000000a0000 - 0x00000000000bffff
@@ -120,22 +120,22 @@
 00034913119i[BIOS ] int13_harddisk: function 41, unmapped device for ELDL=81
 00034917896i[BIOS ] int13_harddisk: function 08, unmapped device for ELDL=81
 00034922546i[BIOS ] *** int 15h function AX=00c0, BX=0000 not yet supported!
-00118290000p[SDL  ] >>PANIC<< User requested shutdown.
-00118290000i[CPU0 ] CPU is in protected mode (active)
-00118290000i[CPU0 ] CS.mode = 32 bit
-00118290000i[CPU0 ] SS.mode = 32 bit
-00118290000i[CPU0 ] | EAX=00000000  EBX=00032120  ECX=000003d8  EDX=000003d4
-00118290000i[CPU0 ] | ESP=00105fe0  EBP=00105ff0  ESI=000322bb  EDI=000322a0
-00118290000i[CPU0 ] | IOPL=0 id vip vif ac vm rf nt of df if tf sf zf af PF cf
-00118290000i[CPU0 ] | SEG sltr(index|ti|rpl)     base    limit G D
-00118290000i[CPU0 ] |  CS:0008( 0001| 0|  0) 00000000 ffffffff 1 1
-00118290000i[CPU0 ] |  DS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-00118290000i[CPU0 ] |  SS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-00118290000i[CPU0 ] |  ES:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-00118290000i[CPU0 ] |  FS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-00118290000i[CPU0 ] |  GS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
-00118290000i[CPU0 ] | EIP=00100c97 (00100c97)
-00118290000i[CPU0 ] | CR0=0x60000011 CR2=0x00000000
-00118290000i[CPU0 ] | CR3=0x00000000 CR4=0x00000000
-00118290000i[CMOS ] Last time is 1439180866 (Sun Aug  9 22:27:46 2015)
-00118290000i[CTRL ] quit_sim called with exit code 1
+00595330000p[SDL  ] >>PANIC<< User requested shutdown.
+00595330000i[CPU0 ] CPU is in protected mode (active)
+00595330000i[CPU0 ] CS.mode = 32 bit
+00595330000i[CPU0 ] SS.mode = 32 bit
+00595330000i[CPU0 ] | EAX=00000000  EBX=00032120  ECX=000003d0  EDX=000003d4
+00595330000i[CPU0 ] | ESP=00105fe0  EBP=00105ff0  ESI=000322bb  EDI=000322a0
+00595330000i[CPU0 ] | IOPL=0 id vip vif ac vm rf nt of df IF tf sf zf af PF cf
+00595330000i[CPU0 ] | SEG sltr(index|ti|rpl)     base    limit G D
+00595330000i[CPU0 ] |  CS:0008( 0001| 0|  0) 00000000 ffffffff 1 1
+00595330000i[CPU0 ] |  DS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00595330000i[CPU0 ] |  SS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00595330000i[CPU0 ] |  ES:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00595330000i[CPU0 ] |  FS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00595330000i[CPU0 ] |  GS:0010( 0002| 0|  0) 00000000 ffffffff 1 1
+00595330000i[CPU0 ] | EIP=00100cac (00100cac)
+00595330000i[CPU0 ] | CR0=0x60000011 CR2=0x00000000
+00595330000i[CPU0 ] | CR3=0x00000000 CR4=0x00000000
+00595330000i[CMOS ] Last time is 1439508727 (Thu Aug 13 17:32:07 2015)
+00595330000i[CTRL ] quit_sim called with exit code 1
