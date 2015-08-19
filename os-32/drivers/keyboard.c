@@ -1,32 +1,63 @@
 #include <keyboard.h>
 
-#define RSHIFT_FLAG 0x01
-#define LSHIFT_FLAG 0x02
-#define RCTRL_FLAG 0x04
-#define LCTRL_FLAG 0x08
-#define RALT_FLAG 0x10
-#define LALT_FLAG 0x20
-
-#define CAPS_LOCK_FLAG 0x01
-#define NUM_LOCK_FLAG 0x02
-#define SCR_LOCK_FLAG 0x04
-
 #define LSHIFT_PRS 42
 #define RSHIFT_PRS 54
 #define LSHIFT_RLS 42 | 0x80
 #define RSHIFT_RLS 54 | 0x80
 
+#define CAPS_LCK_PRS 58
+#define CAPS_LCK_RLS 58 |0x80
 
-unsigned char keyboard_layouts[2][128];
+#define DEBUG_KEYBOARD_HANDLER
+#ifdef DEBUG_KEYBOARD_HANDLER
+    //#define DEBUG_UPDATE_KEYBOARD_LAYOUT
+#endif // DEBUG_KEYBOARD_HANDLER
+typedef enum LockFlags
+{
+    CapsLockFlag = 0x01,
+    NumLockFlag = 0x02,
+    ScrLockFlag = 0x04,
+} LockFlags_type;
 
-struct keyboard_status keyboard_data;
-keyboard_layout current_layout;
+typedef enum ModifierFlags
+{
+    RightShiftFlag = 0x01,
+    LeftShiftFlag = 0x02,
+    RightCtrlFlag = 0x04,
+    LeftCtrlFlag = 0x08,
+    RightAltFlag = 0x10,
+    LeftAltFlag = 0x20,
+} ModifierFlags_type;
+
+typedef enum KeyboardLayout
+{
+    usNormal,usShift,usCaps,usCapsShift
+} KeyboardLayout_type;
+
+struct KeyboardStatus
+{
+    unsigned char buffer[255];
+    unsigned int start;
+    unsigned int current;
+    LockFlags_type lockFlags;
+    ModifierFlags_type modifierFlags;
+};
+unsigned char keyboard_layouts[4][128];
+struct KeyboardStatus current_keyboard_data;
+KeyboardLayout_type current_layout;
+
+KeyboardLayout_type updateKeyboardLayout();
+void actionOnRelease(unsigned char scancode);
+ void actionOnPress(unsigned char scancode);
 
 void init_keyboard()
 {
-    keyboard_data = (struct keyboard_status)
+    current_keyboard_data = (struct KeyboardStatus)
     {
-        .start = 0,.current = 0,.lock_flags = 0 | NUM_LOCK_FLAG,.modifier_keys_flags = 0
+        .start = 0,
+         .current = 0,
+          .lockFlags = 0 | NumLockFlag,
+           .modifierFlags = 0
     };
     current_layout = usNormal;
 }
@@ -43,50 +74,85 @@ void keyboard_handler(struct regs *r)
 
     if (scancode & 0x80) /*Was key released?*/
     {
-        switch(scancode)
-        {
-        case LSHIFT_RLS:
-            keyboard_data.modifier_keys_flags &= ~LSHIFT_FLAG;
-            kprintf("FLAGS: %p",keyboard_data.modifier_keys_flags);
-            break;
-        case RSHIFT_RLS:
-            keyboard_data.modifier_keys_flags &= ~RSHIFT_FLAG;
-            break;
-        default:
-            break;
-        }
-
+        actionOnRelease(scancode);
     }
     else
     {
+        actionOnPress(scancode);
+        #ifdef DEBUG_KEYBOARD_HANDLER
+        kprintf("%c",keyboard_layouts[current_layout][scancode]);
+        #endif // DEBUG_KEYBOARD_HANDLER
+    }
+    current_layout = updateKeyboardLayout();
+}
 
-        switch(scancode)
+KeyboardLayout_type updateKeyboardLayout()
+{
+    if(current_keyboard_data.modifierFlags & LeftShiftFlag || current_keyboard_data.modifierFlags & RightShiftFlag)
+    {
+        if(current_keyboard_data.lockFlags & CapsLockFlag)
         {
-        case LSHIFT_PRS:
-            keyboard_data.modifier_keys_flags |= LSHIFT_FLAG;
+            #ifdef DEBUG_UPDATE_KEYBOARD_LAYOUT
+            kprintf("usCapsShift");
+            #endif // DEBUG_UPDATE_KEYBOARD_LAYOUT
+            return usCapsShift;
+        }
+        #ifdef DEBUG_UPDATE_KEYBOARD_LAYOUT
+        kprintf("usShift");
+        #endif // DEBUG_UPDATE_KEYBOARD_LAYOUT
+        return usShift;
+    }
+    if(current_keyboard_data.lockFlags & CapsLockFlag)
+    {
+        #ifdef DEBUG_UPDATE_KEYBOARD_LAYOUT
+        kprintf("usCaps");
+        #endif // DEBUG_UPDATE_KEYBOARD_LAYOUT
+        return usCaps;
+    }
+    #ifdef DEBUG_UPDATE_KEYBOARD_LAYOUT
+    kprintf("usNormal");
+    #endif // DEBUG_UPDATE_KEYBOARD_LAYOUT
+    return usNormal;
+}
+
+void actionOnRelease(unsigned char scancode)
+{
+    switch(scancode)
+        {
+        case LSHIFT_RLS:
+            current_keyboard_data.modifierFlags &= ~LeftShiftFlag;
             break;
-        case RSHIFT_PRS:
-            keyboard_data.modifier_keys_flags |= RSHIFT_FLAG;
+        case RSHIFT_RLS:
+            current_keyboard_data.modifierFlags &= ~RightShiftFlag;
+            break;
+        case CAPS_LCK_RLS:
             break;
         default:
             break;
         }
-
-        if(keyboard_data.modifier_keys_flags & LSHIFT_FLAG || keyboard_data.modifier_keys_flags & RSHIFT_FLAG)
-        {
-            current_layout = usShift;
-        }
-        else
-        {
-            current_layout = usNormal;
-        }
-
-        kprintf("%c",keyboard_layouts[current_layout][scancode]);
-    }
 }
 
-unsigned char keyboard_layouts[2][128] =
+void actionOnPress(unsigned char scancode)
 {
+            switch(scancode)
+        {
+        case LSHIFT_PRS:
+            current_keyboard_data.modifierFlags |= LeftShiftFlag;
+            break;
+        case RSHIFT_PRS:
+            current_keyboard_data.modifierFlags |= RightShiftFlag;
+            break;
+        case CAPS_LCK_PRS:
+            current_keyboard_data.lockFlags ^= CapsLockFlag;
+            break;
+        default:
+            break;
+        }
+}
+
+unsigned char keyboard_layouts[4][128] =
+{
+    /*US Normal*/
     {
         255, 27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
         '9', '0', '-', '=', '\b',	/* Backspace */
@@ -125,6 +191,7 @@ unsigned char keyboard_layouts[2][128] =
         222,	/* F12 Key */
         221,	/* All other keys are undefined */
     },
+    /*US Shift*/
     {
         255,  27, '!', '@', '#', '$', '%', '^', '&', '*',	/* 9 */
         '(', ')', '_', '+', '\b',	/* Backspace */
@@ -162,13 +229,91 @@ unsigned char keyboard_layouts[2][128] =
         223,	/* F11 Key */
         222,	/* F12 Key */
         221,	/* All other keys are undefined */
+    },
+    /*US Caps*/
+    {
+        255, 27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
+        '9', '0', '-', '=', '\b',	/* Backspace */
+        '\t',			/* Tab */
+        'Q', 'W', 'E', 'R',	/* 19 */
+        'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n',	/* Enter key */
+        254,			/* 29   - Control */
+        'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';',	/* 39 */
+        '\"', '`',   253,		/* Left shift */
+        '\\', 'Z', 'X', 'C', 'V', 'B', 'N',			/* 49 */
+        'M', ',', '.', '/',   252,				/* Right shift */
+        '*',
+        251,	/* Alt */
+        ' ',	/* Space bar */
+        250,	/* Caps lock */
+        249,	/* 59 - F1 key ... > */
+        248,   247,   246,   245,   244,   243,   242,   241,
+        240,	/* < ... F10 */
+        239,	/* 69 - Num lock*/
+        238,	/* Scroll Lock */
+        237,	/* Home key */
+        236,	/* Up Arrow */
+        235,	/* Page Up */
+        '-',
+        234,	/* Left Arrow */
+        233,
+        232,	/* Right Arrow */
+        '+',
+        231,	/* 79 - End key*/
+        230,	/* Down Arrow */
+        229,	/* Page Down */
+        228,	/* Insert Key */
+        227,	/* Delete Key */
+        226,   225,   224,
+        223,	/* F11 Key */
+        222,	/* F12 Key */
+        221,	/* All other keys are undefined */
+    },
+    /*US CapsShift*/
+    {
+         255,  27, '!', '@', '#', '$', '%', '^', '&', '*',	/* 9 */
+        '(', ')', '_', '+', '\b',	/* Backspace */
+        '\t',			/* Tab */
+        'q', 'w', 'e', 'r',	/* 19 */
+        't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',	/* Enter key */
+        254,			/* 29   - Control */
+        'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ':',	/* 39 */
+        '\"', '~',   253,		/* Left shift */
+        '|', 'z', 'x', 'c', 'v', 'b', 'n',			/* 49 */
+        'm', '<', '>', '?',   252,				/* Right shift [54]*/
+        '*',
+        251,	/* Alt */
+        ' ',	/* Space bar */
+        250,	/* Caps lock */
+        249,	/* 59 - F1 key ... > */
+        248,   247,   246,   245,   244,   243,   242,   241,
+        240,	/* < ... F10 */
+        239,	/* 69 - Num lock*/
+        238,	/* Scroll Lock */
+        237,	/* Home key */
+        236,	/* Up Arrow */
+        235,	/* Page Up */
+        '-',
+        234,	/* Left Arrow */
+        233,
+        232,	/* Right Arrow */
+        '+',
+        231,	/* 79 - End key*/
+        230,	/* Down Arrow */
+        229,	/* Page Down */
+        228,	/* Insert Key */
+        227,	/* Delete Key */
+        226,   225,   224,
+        223,	/* F11 Key */
+        222,	/* F12 Key */
+        221,	/* All other keys are undefined */
     }
 };
 
 
 /* Here, a key was just pressed. Please note that if you
-        *  hold a key down, you will get repeated key press
-        *  interrupts. */
+*  hold a key down, you will get repeated key press
+*  interrupts. */
 
 /* Just to show you how this works, we simply translate
 *  the keyboard scancode into an ASCII value, and then
