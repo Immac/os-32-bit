@@ -6,12 +6,18 @@
 #include <screen.h>
 
 void keyboard_handler(struct regs *r);
+void init_keyboard(void);
 struct keyboard_status
 {
     unsigned char buffer[255];
     unsigned int start;
     unsigned int current;
-    unsigned char lock_flags;
-    unsigned char modifier_keys_flags;
+    unsigned int lock_flags;
+    unsigned int modifier_keys_flags;
 };
+
+typedef enum
+{
+    usNormal,usShift,usCaps,usCapsShift
+} keyboard_layout;
 #endif //_KEYBOARD_H_

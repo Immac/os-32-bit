@@ -1,51 +1,87 @@
 #include <keyboard.h>
 
-
-#define SHIFT_FLAG 0x01
-#define CTRL_FLAG 0x02
-#define ALT_FLAG 0x04
+#define RSHIFT_FLAG 0x01
+#define LSHIFT_FLAG 0x02
+#define RCTRL_FLAG 0x04
+#define LCTRL_FLAG 0x08
+#define RALT_FLAG 0x10
+#define LALT_FLAG 0x20
 
 #define CAPS_LOCK_FLAG 0x01
 #define NUM_LOCK_FLAG 0x02
 #define SCR_LOCK_FLAG 0x04
 
+#define LSHIFT_PRS 42
+#define RSHIFT_PRS 54
+#define LSHIFT_RLS 42 | 0x80
+#define RSHIFT_RLS 54 | 0x80
 
 
 unsigned char keyboard_layouts[2][128];
 
 struct keyboard_status keyboard_data;
+keyboard_layout current_layout;
+
+void init_keyboard()
+{
+    keyboard_data = (struct keyboard_status)
+    {
+        .start = 0,.current = 0,.lock_flags = 0 | NUM_LOCK_FLAG,.modifier_keys_flags = 0
+    };
+    current_layout = usNormal;
+}
+
+
 
 /* Handles the keyboard interrupt */
 void keyboard_handler(struct regs *r)
 {
     unsigned char scancode;
-    enum
-    {
-        usNormal,usShift
-    };
 
     /* Read from the keyboard's data buffer */
     scancode = port_byte_in(0x60);
 
     if (scancode & 0x80) /*Was key released?*/
     {
+        switch(scancode)
+        {
+        case LSHIFT_RLS:
+            keyboard_data.modifier_keys_flags &= ~LSHIFT_FLAG;
+            kprintf("FLAGS: %p",keyboard_data.modifier_keys_flags);
+            break;
+        case RSHIFT_RLS:
+            keyboard_data.modifier_keys_flags &= ~RSHIFT_FLAG;
+            break;
+        default:
+            break;
+        }
+
     }
     else
     {
-        /* Here, a key was just pressed. Please note that if you
-        *  hold a key down, you will get repeated key press
-        *  interrupts. */
 
-        /* Just to show you how this works, we simply translate
-        *  the keyboard scancode into an ASCII value, and then
-        *  display it to the screen. You can get creative and
-        *  use some flags to see if a shift is pressed and use a
-        *  different layout, or you can add another 128 entries
-        *  to the above layout to correspond to 'shift' being
-        *  held. If shift is held using the larger lookup table,
-        *  you would add 128 to the scancode when you look for it */
+        switch(scancode)
+        {
+        case LSHIFT_PRS:
+            keyboard_data.modifier_keys_flags |= LSHIFT_FLAG;
+            break;
+        case RSHIFT_PRS:
+            keyboard_data.modifier_keys_flags |= RSHIFT_FLAG;
+            break;
+        default:
+            break;
+        }
 
-        kprintf("%c",keyboard_layouts[usNormal][scancode]);
+        if(keyboard_data.modifier_keys_flags & LSHIFT_FLAG || keyboard_data.modifier_keys_flags & RSHIFT_FLAG)
+        {
+            current_layout = usShift;
+        }
+        else
+        {
+            current_layout = usNormal;
+        }
+
+        kprintf("%c",keyboard_layouts[current_layout][scancode]);
     }
 }
 
@@ -59,9 +95,9 @@ unsigned char keyboard_layouts[2][128] =
         't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',	/* Enter key */
         254,			/* 29   - Control */
         'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',	/* 39 */
-        '\'', '`',   253,		/* Left shift */
+        '\'', '`',   253,		/* Left shift [42]*/
         '\\', 'z', 'x', 'c', 'v', 'b', 'n',			/* 49 */
-        'm', ',', '.', '/',   252,				/* Right shift */
+        'm', ',', '.', '/',   252,				/* Right shift [54]*/
         '*',
         251,	/* Alt */
         ' ',	/* Space bar */
@@ -96,7 +132,7 @@ unsigned char keyboard_layouts[2][128] =
         'Q', 'W', 'E', 'R',	/* 19 */
         'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n',	/* Enter key */
         254,			/* 29   - Control */
-        'A', 'S', 'S', 'F', 'G', 'H', 'J', 'K', 'L', ':',	/* 39 */
+        'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':',	/* 39 */
         '\"', '~',   253,		/* Left shift */
         '|', 'Z', 'X', 'C', 'V', 'B', 'N',			/* 49 */
         'M', '<', '>', '?',   252,				/* Right shift */
@@ -128,3 +164,17 @@ unsigned char keyboard_layouts[2][128] =
         221,	/* All other keys are undefined */
     }
 };
+
+
+/* Here, a key was just pressed. Please note that if you
+        *  hold a key down, you will get repeated key press
+        *  interrupts. */
+
+/* Just to show you how this works, we simply translate
+*  the keyboard scancode into an ASCII value, and then
+*  display it to the screen. You can get creative and
+*  use some flags to see if a shift is pressed and use a
+*  different layout, or you can add another 128 entries
+*  to the above layout to correspond to 'shift' being
+*  held. If shift is held using the larger lookup table,
+*  you would add 128 to the scancode when you look for it */
