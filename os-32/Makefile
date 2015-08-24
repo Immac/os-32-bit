@@ -1,9 +1,9 @@
 # Automatically expand to a list of existing files that
 # match the patterns
-C_SOURCES = $(wildcard kernel/*.c drivers/*.c)
-HEADERS = $(wildcard kernel/*.h drivers/*.h)
+C_SOURCES = $(wildcard kernel/*.c drivers/*.c util/*.c)
+HEADERS = $(wildcard kernel/*.h drivers/*.h util/*.h)
 OBJ = ${C_SOURCES:.c=.o}
-INCLUDE = -Ikernel/ -Idrivers/
+INCLUDE = -Ikernel/ -Idrivers/ -Iutil/
 
 C_FLAGS = -O1 -nostdinc -nostdlib -ffreestanding -fno-stack-protector -std=gnu99 -m32
 CC = gcc

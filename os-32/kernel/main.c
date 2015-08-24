@@ -9,10 +9,15 @@ void initialize_kernel(struct multiboot_info *mbinfo, uint32_t kernel_end_addr);
 void main(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
 {
     initialize_kernel(mbinfo,kernel_end_addr);
-    kprintf("MikOS II: Hello!");
+    kprintf("Welcome to MikOS II:");
     sti();
     while(1)
     {
+        unsigned char temp = Keyboard_ReadNext();
+        if(temp != 0)
+        {
+            kprintf("%c",temp);
+        }
     }
 }
 

@@ -8,9 +8,12 @@
 #define CAPS_LCK_PRS 58
 #define CAPS_LCK_RLS 58 |0x80
 
-#define DEBUG_KEYBOARD_HANDLER
+#define KEYBOARD_LAYOUT_COUNT 4
+#define KEYBOARD_BUFFER_SIZE 255
+
+//#define DEBUG_KEYBOARD_HANDLER
 #ifdef DEBUG_KEYBOARD_HANDLER
-    //#define DEBUG_UPDATE_KEYBOARD_LAYOUT
+//#define DEBUG_UPDATE_KEYBOARD_LAYOUT
 #endif // DEBUG_KEYBOARD_HANDLER
 typedef enum LockFlags
 {
@@ -31,38 +34,39 @@ typedef enum ModifierFlags
 
 typedef enum KeyboardLayout
 {
-    usNormal,usShift,usCaps,usCapsShift
+    UsNormal,UsShift,UsCaps,UsCapsShift
 } KeyboardLayout_type;
 
 struct KeyboardStatus
 {
-    unsigned char buffer[255];
-    unsigned int start;
-    unsigned int current;
+    unsigned char buffer[KEYBOARD_BUFFER_SIZE];
     LockFlags_type lockFlags;
     ModifierFlags_type modifierFlags;
 };
-unsigned char keyboard_layouts[4][128];
+
+Queue_type keyb_q;
+unsigned char keyboard_layouts[KEYBOARD_LAYOUT_COUNT][128];
 struct KeyboardStatus current_keyboard_data;
 KeyboardLayout_type current_layout;
 
 KeyboardLayout_type updateKeyboardLayout();
 void actionOnRelease(unsigned char scancode);
- void actionOnPress(unsigned char scancode);
+void actionOnPress(unsigned char scancode);
 
 void init_keyboard()
 {
     current_keyboard_data = (struct KeyboardStatus)
     {
-        .start = 0,
-         .current = 0,
-          .lockFlags = 0 | NumLockFlag,
-           .modifierFlags = 0
+        .lockFlags = NumLockFlag,
+         .modifierFlags = 0
     };
-    current_layout = usNormal;
+    for(int i = 0; i < KEYBOARD_LAYOUT_COUNT; i++)
+    {
+        current_keyboard_data.buffer[i] = 0;
+    }
+    Queue_Constructor(&keyb_q,current_keyboard_data.buffer,KEYBOARD_BUFFER_SIZE);
+    current_layout = UsNormal;
 }
-
-
 
 /* Handles the keyboard interrupt */
 void keyboard_handler(struct regs *r)
@@ -79,9 +83,11 @@ void keyboard_handler(struct regs *r)
     else
     {
         actionOnPress(scancode);
-        #ifdef DEBUG_KEYBOARD_HANDLER
+        Queue_Enqueue(&keyb_q,keyboard_layouts[current_layout][scancode]);
+
+#ifdef DEBUG_KEYBOARD_HANDLER
         kprintf("%c",keyboard_layouts[current_layout][scancode]);
-        #endif // DEBUG_KEYBOARD_HANDLER
+#endif // DEBUG_KEYBOARD_HANDLER
     }
     current_layout = updateKeyboardLayout();
 }
@@ -92,65 +98,70 @@ KeyboardLayout_type updateKeyboardLayout()
     {
         if(current_keyboard_data.lockFlags & CapsLockFlag)
         {
-            #ifdef DEBUG_UPDATE_KEYBOARD_LAYOUT
+#ifdef DEBUG_UPDATE_KEYBOARD_LAYOUT
             kprintf("usCapsShift");
-            #endif // DEBUG_UPDATE_KEYBOARD_LAYOUT
-            return usCapsShift;
+#endif // DEBUG_UPDATE_KEYBOARD_LAYOUT
+            return UsCapsShift;
         }
-        #ifdef DEBUG_UPDATE_KEYBOARD_LAYOUT
+#ifdef DEBUG_UPDATE_KEYBOARD_LAYOUT
         kprintf("usShift");
-        #endif // DEBUG_UPDATE_KEYBOARD_LAYOUT
-        return usShift;
+#endif // DEBUG_UPDATE_KEYBOARD_LAYOUT
+        return UsShift;
     }
     if(current_keyboard_data.lockFlags & CapsLockFlag)
     {
-        #ifdef DEBUG_UPDATE_KEYBOARD_LAYOUT
+#ifdef DEBUG_UPDATE_KEYBOARD_LAYOUT
         kprintf("usCaps");
-        #endif // DEBUG_UPDATE_KEYBOARD_LAYOUT
-        return usCaps;
+#endif // DEBUG_UPDATE_KEYBOARD_LAYOUT
+        return UsCaps;
     }
-    #ifdef DEBUG_UPDATE_KEYBOARD_LAYOUT
+#ifdef DEBUG_UPDATE_KEYBOARD_LAYOUT
     kprintf("usNormal");
-    #endif // DEBUG_UPDATE_KEYBOARD_LAYOUT
-    return usNormal;
+#endif // DEBUG_UPDATE_KEYBOARD_LAYOUT
+    return UsNormal;
 }
 
 void actionOnRelease(unsigned char scancode)
 {
     switch(scancode)
-        {
-        case LSHIFT_RLS:
-            current_keyboard_data.modifierFlags &= ~LeftShiftFlag;
-            break;
-        case RSHIFT_RLS:
-            current_keyboard_data.modifierFlags &= ~RightShiftFlag;
-            break;
-        case CAPS_LCK_RLS:
-            break;
-        default:
-            break;
-        }
+    {
+    case LSHIFT_RLS:
+        current_keyboard_data.modifierFlags &= ~LeftShiftFlag;
+        break;
+    case RSHIFT_RLS:
+        current_keyboard_data.modifierFlags &= ~RightShiftFlag;
+        break;
+    case CAPS_LCK_RLS:
+        break;
+    default:
+        break;
+    }
 }
 
 void actionOnPress(unsigned char scancode)
 {
-            switch(scancode)
-        {
-        case LSHIFT_PRS:
-            current_keyboard_data.modifierFlags |= LeftShiftFlag;
-            break;
-        case RSHIFT_PRS:
-            current_keyboard_data.modifierFlags |= RightShiftFlag;
-            break;
-        case CAPS_LCK_PRS:
-            current_keyboard_data.lockFlags ^= CapsLockFlag;
-            break;
-        default:
-            break;
-        }
+    switch(scancode)
+    {
+    case LSHIFT_PRS:
+        current_keyboard_data.modifierFlags |= LeftShiftFlag;
+        break;
+    case RSHIFT_PRS:
+        current_keyboard_data.modifierFlags |= RightShiftFlag;
+        break;
+    case CAPS_LCK_PRS:
+        current_keyboard_data.lockFlags ^= CapsLockFlag;
+        break;
+    default:
+        break;
+    }
 }
 
-unsigned char keyboard_layouts[4][128] =
+unsigned char Keyboard_ReadNext(void)
+{
+    return Queue_Dequeue(&keyb_q);
+}
+
+unsigned char keyboard_layouts[KEYBOARD_LAYOUT_COUNT][128] =
 {
     /*US Normal*/
     {
@@ -271,7 +282,7 @@ unsigned char keyboard_layouts[4][128] =
     },
     /*US CapsShift*/
     {
-         255,  27, '!', '@', '#', '$', '%', '^', '&', '*',	/* 9 */
+        255,  27, '!', '@', '#', '$', '%', '^', '&', '*',	/* 9 */
         '(', ')', '_', '+', '\b',	/* Backspace */
         '\t',			/* Tab */
         'q', 'w', 'e', 'r',	/* 19 */
