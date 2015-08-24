@@ -40,11 +40,11 @@ typedef enum KeyboardLayout
 struct KeyboardStatus
 {
     unsigned char buffer[KEYBOARD_BUFFER_SIZE];
+    Queue_type keyboard_queue;
     LockFlags_type lockFlags;
     ModifierFlags_type modifierFlags;
 };
 
-Queue_type keyb_q;
 unsigned char keyboard_layouts[KEYBOARD_LAYOUT_COUNT][128];
 struct KeyboardStatus current_keyboard_data;
 KeyboardLayout_type current_layout;
@@ -64,7 +64,7 @@ void init_keyboard()
     {
         current_keyboard_data.buffer[i] = 0;
     }
-    Queue_Constructor(&keyb_q,current_keyboard_data.buffer,KEYBOARD_BUFFER_SIZE);
+    Queue_Constructor(&current_keyboard_data.keyboard_queue,current_keyboard_data.buffer,KEYBOARD_BUFFER_SIZE);
     current_layout = UsNormal;
 }
 
@@ -83,7 +83,7 @@ void keyboard_handler(struct regs *r)
     else
     {
         actionOnPress(scancode);
-        Queue_Enqueue(&keyb_q,keyboard_layouts[current_layout][scancode]);
+        Queue_Enqueue(&current_keyboard_data.keyboard_queue,keyboard_layouts[current_layout][scancode]);
 
 #ifdef DEBUG_KEYBOARD_HANDLER
         kprintf("%c",keyboard_layouts[current_layout][scancode]);
@@ -158,7 +158,7 @@ void actionOnPress(unsigned char scancode)
 
 unsigned char Keyboard_ReadNext(void)
 {
-    return Queue_Dequeue(&keyb_q);
+    return Queue_Dequeue(&current_keyboard_data.keyboard_queue);
 }
 
 unsigned char keyboard_layouts[KEYBOARD_LAYOUT_COUNT][128] =
