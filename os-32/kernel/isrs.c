@@ -5,7 +5,7 @@
 *  Notes: No warranty expressed or implied. Use at own risk. */
 #include <system.h>
 #include <screen.h>
-
+#include "syscall-handler.h"
 /* These are function prototypes for all of the exception
 *  handlers: The first 32 entries in the IDT are reserved
 *  by Intel, and are designed to service exceptions! */
@@ -41,6 +41,7 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
+extern void isr128();
 
 /* This is a very repetitive function... it's not hard, it's
 *  just annoying. As you can see, we set the first 32 entries
@@ -88,6 +89,8 @@ void isrs_init()
     idt_set_gate(29, (unsigned)isr29, 0x08, 0x8E);
     idt_set_gate(30, (unsigned)isr30, 0x08, 0x8E);
     idt_set_gate(31, (unsigned)isr31, 0x08, 0x8E);
+
+    idt_set_gate(128, (unsigned)isr128, 0x08, 0x8E);
 }
 
 /* This is a simple string array. It contains the message that
@@ -141,11 +144,15 @@ const char *exception_messages[] =
 *  happening and messing up kernel data structures */
 void fault_handler(struct regs *r)
 {
+    if(r->int_no == 128)
+    {
+        Interrupt0x80Handler(r);
+    }
     if (r->int_no < 32)
     {
         puts(exception_messages[r->int_no]);
         puts(" Exception. System Halted!\n");
-        
+
         while (1);
     }
 }

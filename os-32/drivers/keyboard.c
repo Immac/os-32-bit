@@ -156,9 +156,19 @@ void actionOnPress(unsigned char scancode)
     }
 }
 
-unsigned char Keyboard_ReadNext(void)
+unsigned char Keyboard_ReadKey(void)
 {
-    return Queue_Dequeue(&current_keyboard_data.keyboard_queue);
+
+    unsigned char read_key = '\0';
+    //puts("Keyboard_ReadKey");
+    while(read_key == '\0')
+     {
+         cli();
+         read_key = Queue_Dequeue(&current_keyboard_data.keyboard_queue);
+         sti();
+     }
+
+     return read_key;
 }
 
 unsigned char keyboard_layouts[KEYBOARD_LAYOUT_COUNT][128] =

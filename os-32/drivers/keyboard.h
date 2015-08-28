@@ -9,7 +9,7 @@
 
 void keyboard_handler(struct regs *r);
 void init_keyboard(void);
-unsigned char Keyboard_ReadNext(void);
+unsigned char Keyboard_ReadKey(void);
 
 
 #endif //_KEYBOARD_H_

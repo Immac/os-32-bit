@@ -12,6 +12,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="kernel/osapi" />
 				</Compiler>
 				<MakeCommands>
 					<Build command="$make -f $makefile" />
@@ -29,6 +30,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="kernel/osapi" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -79,8 +81,28 @@
 		<Unit filename="kernel/mem_mgmt.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="kernel/osapi/print-string.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/osapi/print-string.h" />
+		<Unit filename="kernel/osapi/read-string.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/osapi/read-string.h" />
+		<Unit filename="kernel/osapi/syscall-interface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/osapi/syscall-interface.h" />
+		<Unit filename="kernel/syscall-handler.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/syscall-handler.h" />
 		<Unit filename="kernel/system.h" />
 		<Unit filename="kernel/types.h" />
+		<Unit filename="util/mikos-math.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="util/mikos-math.h" />
 		<Unit filename="util/queue.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -89,6 +111,15 @@
 			<code_completion />
 			<debugger />
 			<envvars />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

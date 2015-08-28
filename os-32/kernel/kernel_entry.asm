@@ -25,7 +25,7 @@ mboot:
     MULTIBOOT_HEADER_MAGIC  equ 0x1BADB002
     MULTIBOOT_HEADER_FLAGS  equ MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO | MULTIBOOT_AOUT_KLUDGE
     MULTIBOOT_CHECKSUM      equ -(MULTIBOOT_HEADER_MAGIC + MULTIBOOT_HEADER_FLAGS)
-    
+
     ; This is the GRUB Multiboot header. A boot signature
     dd MULTIBOOT_HEADER_MAGIC
     dd MULTIBOOT_HEADER_FLAGS
@@ -110,6 +110,7 @@ global isr28
 global isr29
 global isr30
 global isr31
+global isr128
 
 ;  0: Divide By Zero Exception
 isr0:
@@ -329,6 +330,11 @@ isr31:
     push byte 31
     jmp isr_common_stub
 
+isr128:
+    cli
+    push 0
+    push 128
+    jmp isr_common_stub
 
 ; We call a C function in here. We need to let the assembler know
 ; that '_fault_handler' exists in another file
