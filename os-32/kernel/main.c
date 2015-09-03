@@ -6,25 +6,23 @@
 #include "syscall-handler.h"
 #include "osapi/syscall-interface.h"
 
-typedef void (*call_module_t)(void);
-
 void initialize_kernel(struct multiboot_info *mbinfo, uint32_t kernel_end_addr);
 
 void main(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
 {
     initialize_kernel(mbinfo,kernel_end_addr);
     sti();
-    kprintf("Welcome to MikOS II:");
+    kprintf("Welcome to MikOS II:\n");
 
     if (CHECK_FLAG(mbinfo->flags,3))
     {
-        kprintf("flag 3 ok.");
+        kprintf("mbinfo->flags check ");
         if(mbinfo->mods_count == 1)
         {
-            unsigned int address_of_module = mbinfo->mods_addr;
-            call_module_t start_program = (call_module_t) address_of_module;
+            MultibootList_type *mods_list = (MultibootList_type*)mbinfo->mods_addr;
+            call_module_t start_program = (call_module_t) mods_list[0].mod_start;
             kprintf("start_program: %p\n",start_program);
-            start_program();
+            start_program((char*)start_program);
         }
     }
 

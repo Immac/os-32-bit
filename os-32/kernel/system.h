@@ -69,6 +69,14 @@ struct multiboot_mmap_entry {
     uint32_t type;
 } __attribute__((packed));
 
+typedef void (*call_module_t)();
+
+typedef struct multiboot_list {
+    unsigned int mod_start;
+    unsigned int mod_end;
+    unsigned int cmd_ling;
+    unsigned int  pad;
+} MultibootList_type;
 typedef struct multiboot_mmap_entry multiboot_memory_map_t;
 
 /* String functions */
