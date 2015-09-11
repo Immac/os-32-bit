@@ -89,6 +89,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="kernel/osapi/read-string.h" />
+		<Unit filename="kernel/osapi/syscall-code.h" />
 		<Unit filename="kernel/osapi/syscall-interface.c">
 			<Option compilerVar="CC" />
 		</Unit>
