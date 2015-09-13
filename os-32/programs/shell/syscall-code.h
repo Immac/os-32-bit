@@ -8,7 +8,10 @@ typedef enum SyscallCode
     PrintString,
     ReadString,
     PrintInt,
-    PrintPointer
+    PrintPointer,
+    Malloc,
+    Free,
+    SyscallCount
 } SyscallCode_type;
 
 

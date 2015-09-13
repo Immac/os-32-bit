@@ -81,7 +81,7 @@ ExitCode_type Shell_UserRequest()
 
 int GetCommand(char *userInput)
 {
-    return MikosLib_StoI_Map_EvaluateKey(&CommandMap,user_input,InputSize);
+    return MikosLib_StoI_Map_EvaluateKey(&CommandMap,userInput,InputSize);
 }
 
 char *Shell_RepairDataSegmentOffset(char *string)
