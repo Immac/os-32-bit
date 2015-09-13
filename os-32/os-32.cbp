@@ -81,6 +81,10 @@
 		<Unit filename="kernel/mem_mgmt.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="kernel/osapi/malloc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/osapi/malloc.h" />
 		<Unit filename="kernel/osapi/print-string.c">
 			<Option compilerVar="CC" />
 		</Unit>

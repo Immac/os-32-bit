@@ -1,10 +1,7 @@
 #include "syscall-handler.h"
 
 
-void (*handlers[OSAPI_HANDLER_COUNT])();
-
-
-
+void (*handlers[SyscallCount])();
 
 void InitSyscallInterfaceHandlers()
 {
@@ -12,6 +9,8 @@ void InitSyscallInterfaceHandlers()
     handlers[ReadString] = Osapi_ReadString;
     handlers[PrintInt] = Osapi_PrintInt;
     handlers[PrintPointer] = Osapi_PrintPointer;
+    handlers[Malloc] = Osapi_Malloc;
+    handlers[Free] = Osapi_Free;
 }
 
 void Interrupt0x80Handler(struct regs *r)

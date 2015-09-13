@@ -39,3 +39,24 @@ void Mikos_PrintPointer(void *pointer)
          :
          );
 }
+
+void *Mikos_Malloc(unsigned int nBytes)
+{
+    void *output;
+    int syscall_code = Malloc;
+    asm ("int $128"
+         : "=r"(output)
+         : "a"(syscall_code), "b"(nBytes)
+         :
+         );
+}
+
+void Mikos_Free(void *target)
+{
+    int syscall_code = Free;
+    asm ("int $128"
+         :
+         : "a"(syscall_code), "b"(target)
+         :
+         );
+}

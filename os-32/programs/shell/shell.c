@@ -1,6 +1,7 @@
 #include "shell.h"
 
 char *Shell_RepairDataSegmentOffset(char *string);
+int GetCommand(char *userInput);
 #define InputSize 80 // static const int InputSize = 80;
 
 typedef enum Command
@@ -27,8 +28,6 @@ char *DataSegmentAddress;
 char *Commands[CommandCount];
 Shell_MapEntry CommandEntries[CommandCount];
 Shell_Map CommandMap;
-
-
 
 ExitCode_type (*Actions[CommandCount])();
 ExitCode_type Shell_UserRequest(void);
@@ -62,17 +61,13 @@ int Shell_MainLoop()
     }
 }
 
-char *Shell_RepairDataSegmentOffset(char *string)
-{
-    return (char*)((unsigned int)DataSegmentAddress + (unsigned int)string);
-}
-
 ExitCode_type PerformAction(char *user_input)
 {
-    int command = MikosLib_StoI_Map_EvaluateKey(&CommandMap,user_input,InputSize);
+
+    int command = GetCommand(user_input);
     if (command != -1)
     {
-        return Actions[command]();
+        return Actions[command](user_input);
     }
     Mikos_PrintString(user_input);
     Mikos_PrintString(Shell_RepairDataSegmentOffset(" is not a valid command!\n"));
@@ -84,3 +79,12 @@ ExitCode_type Shell_UserRequest()
     return UserRequest;
 }
 
+int GetCommand(char *userInput)
+{
+    return MikosLib_StoI_Map_EvaluateKey(&CommandMap,user_input,InputSize);
+}
+
+char *Shell_RepairDataSegmentOffset(char *string)
+{
+    return (char*)((unsigned int)DataSegmentAddress + (unsigned int)string);
+}
