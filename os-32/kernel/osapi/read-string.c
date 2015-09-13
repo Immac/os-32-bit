@@ -7,6 +7,7 @@ typedef enum SpecialCharacters
     Enter = 0x0D,
     Space = 0x20
 } SpecialCharacters_type;
+
 /**
 *   \param r->ebx The buffer that will be written to.
 *   \param r->ecx The size of the buffer that will be written to.
@@ -23,23 +24,21 @@ void Osapi_ReadString(struct regs* r)
         {
         case Backspace:
             i = Math_Max(0,--i);
-            //kprintf("%c",Backspace);
-            //kprintf("%c",Space);
-            //kprintf("%c",Backspace);
-            buffer[i] = Space;
+            buffer[i] = 0;
             break;
         case Enter:
             current_char = '\n';
             buffer[i] = current_char;
-            //kprintf("%c",Enter);
             i++;
             break;
         default:
-            buffer[i] = current_char;
-            kprintf("%c",current_char);
-            i++;
+            if(current_char < (unsigned int)0xCD)
+            {
+                buffer[i] = current_char;
+                kprintf("%c",current_char);
+                i++;
+            }
         }
-
         current_char = Keyboard_ReadKey();
     } while(current_char != '\n' && i < buffer_size - 1);
     buffer[buffer_size] = '\0';

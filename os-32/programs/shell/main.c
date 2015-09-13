@@ -1,8 +1,9 @@
 #include "syscall-interface.h"
 #include "shell.h"
 
-int main(char *dataStartAddress)
+int main(char *dataSegmentAddress)
 {
-    ShellLoop(dataStartAddress);
+    Shell_Construct(dataSegmentAddress);
+    Shell_MainLoop();
 	while(1);
 }

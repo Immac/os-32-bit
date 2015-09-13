@@ -15,3 +15,8 @@ int MikosLib_Util_StringCompare(char *me, char *other,unsigned int max)
 		return 0;
 	return -1;
 }
+
+int MikosLib_Util_StringEquals(char *me, char *other, unsigned int max)
+{
+    return !(MikosLib_Util_StringCompare(me,other,max));
+}

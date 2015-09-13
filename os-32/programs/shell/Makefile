@@ -1,7 +1,7 @@
 # Automatically expand to a list of existing files that
 # match the patterns
-C_SOURCES = $(wildcard lib/string-util/*.c drivers/*.c util/*.c *.c)
-HEADERS = $(wildcard lib/string-util/*.h drivers/*.h util/*.h *.h)
+C_SOURCES = $(wildcard lib/*/*.c lib/array-util/*.c drivers/*.c util/*.c *.c)
+HEADERS = $(wildcard lib/*/*.h lib/array-util/*.h drivers/*.h util/*.h *.h)
 OBJ = ${C_SOURCES:.c=.o}
 INCLUDE = -Ikernel/ -Idrivers/ -Iutil/
 

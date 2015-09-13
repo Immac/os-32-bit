@@ -28,6 +28,19 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Makefile" />
+		<Unit filename="lib/array-util/array-clear.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lib/array-util/array-clear.h" />
+		<Unit filename="lib/array-util/array-fill.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lib/array-util/array-fill.h" />
+		<Unit filename="lib/map-util/map.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lib/map-util/map.h" />
 		<Unit filename="lib/string-util/string-util.c">
 			<Option compilerVar="CC" />
 		</Unit>
