@@ -24,12 +24,11 @@ void Osapi_ReadString(struct regs* r)
         {
         case Backspace:
             i = Math_Max(0,--i);
-            kprintf("%c%c%c",0x08,0x00,0x08);
+            buffer[i] = 0;
+            //kprintf("%c%c%c",0x08,0x00,0x08);
             break;
         case Enter:
             current_char = '\n';
-            buffer[i] = current_char;
-            i++;
             break;
         default:
             if(current_char < (unsigned int)0xCD)
@@ -41,6 +40,6 @@ void Osapi_ReadString(struct regs* r)
         }
         current_char = Keyboard_ReadKey();
     } while(current_char != '\n' && i < buffer_size - 1);
-    buffer[buffer_size] = '\0';
+    buffer[i] = 0;
 }
 

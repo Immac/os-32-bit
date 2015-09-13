@@ -35,8 +35,13 @@ char *MikosLib_Util_StringSubstring(char *me, char divisor, unsigned int max)
             }
         }
         temp[i] = 0;
+            Mikos_PrintInt(999);
+        Mikos_PrintString(temp);
+            Mikos_PrintInt(999);
         char *substring = Mikos_Malloc(i * sizeof(substring));
-        MikosLib_Util_StringCopy(substring,temp,i);
+        MikosLib_Util_StringCopy(substring,temp,i+1);
+        Mikos_PrintString(substring);
+            Mikos_PrintInt(999);
         return substring;
 }
 
@@ -50,6 +55,7 @@ void MikosLib_Util_StringCopy(char *me,char *other,unsigned int max)
         {
             break;
         }
+
     }
     if(i == max - 1)
     {

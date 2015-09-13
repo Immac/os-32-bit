@@ -41,8 +41,8 @@ int Shell_Construct(char *dataSegmentAddress)
     DataSegmentAddress = dataSegmentAddress;
     Commands[Exit] = Shell_RepairDataSegmentOffset("exit");
     Commands[Test] = Shell_RepairDataSegmentOffset("test");
-    Actions[Exit] = Shell_UserRequest;
-    Actions[Test] = Shell_Test;
+    Actions[Exit] = (void *)Shell_RepairDataSegmentOffset((char*)Shell_UserRequest);
+    Actions[Test] = (void *)Shell_RepairDataSegmentOffset((char*)Shell_Test);;
 
     for(int i = 0; i < CommandCount; i++)
     {
@@ -64,6 +64,7 @@ int Shell_MainLoop()
         exit_code = PerformAction(user_input);
         MikosLib_Util_ArrayClear(user_input,InputSize);
     }
+
     return 0;
 }
 
@@ -73,11 +74,12 @@ ExitCode_type PerformAction(char *user_input)
     int command = GetCommand(user_input);
     if (command != -1)
     {
+        Mikos_PrintInt(command);
         return Actions[command](user_input);
     }
-    Mikos_PrintString("\n");
-  //  Mikos_PrintString(user_input);
-   // Mikos_PrintString(Shell_RepairDataSegmentOffset(" is not a valid command!\n"));
+
+    Mikos_PrintString(user_input);
+    Mikos_PrintString(Shell_RepairDataSegmentOffset(" is not a valid command!\n"));
     return Continue;
 }
 
@@ -91,7 +93,7 @@ int GetCommand(char *userInput)
     char *command = MikosLib_Util_StringSubstring(userInput,' ',InputSize);
     Mikos_PrintString(command);
     int output = MikosLib_StoI_Map_EvaluateKey(&CommandMap,command,InputSize);
-    Mikos_Free(command);
+    //Mikos_Free(command);
     return output;
 }
 
