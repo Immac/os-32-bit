@@ -7,6 +7,7 @@ int GetCommand(char *userInput);
 typedef enum Command
 {
     Exit,
+    Test,
     CommandCount
 } Command_type;
 
@@ -29,15 +30,19 @@ char *Commands[CommandCount];
 Shell_MapEntry CommandEntries[CommandCount];
 Shell_Map CommandMap;
 
-ExitCode_type (*Actions[CommandCount])();
-ExitCode_type Shell_UserRequest(void);
-ExitCode_type PerformAction(char *user_input);
+ExitCode_type (*Actions[CommandCount])(char *userInput);
+ExitCode_type Shell_UserRequest(char *userInput);
+ExitCode_type Shell_Test(char *userInput);
+
+ExitCode_type PerformAction(char *userInput);
 
 int Shell_Construct(char *dataSegmentAddress)
 {
     DataSegmentAddress = dataSegmentAddress;
     Commands[Exit] = Shell_RepairDataSegmentOffset("exit");
+    Commands[Test] = Shell_RepairDataSegmentOffset("test");
     Actions[Exit] = Shell_UserRequest;
+    Actions[Test] = Shell_Test;
 
     for(int i = 0; i < CommandCount; i++)
     {
@@ -59,6 +64,7 @@ int Shell_MainLoop()
         exit_code = PerformAction(user_input);
         MikosLib_Util_ArrayClear(user_input,InputSize);
     }
+    return 0;
 }
 
 ExitCode_type PerformAction(char *user_input)
@@ -69,22 +75,33 @@ ExitCode_type PerformAction(char *user_input)
     {
         return Actions[command](user_input);
     }
-    Mikos_PrintString(user_input);
-    Mikos_PrintString(Shell_RepairDataSegmentOffset(" is not a valid command!\n"));
+    Mikos_PrintString("\n");
+  //  Mikos_PrintString(user_input);
+   // Mikos_PrintString(Shell_RepairDataSegmentOffset(" is not a valid command!\n"));
     return Continue;
 }
 
-ExitCode_type Shell_UserRequest()
+ExitCode_type Shell_UserRequest(char *userInput)
 {
     return UserRequest;
 }
 
 int GetCommand(char *userInput)
 {
-    return MikosLib_StoI_Map_EvaluateKey(&CommandMap,userInput,InputSize);
+    char *command = MikosLib_Util_StringSubstring(userInput,' ',InputSize);
+    Mikos_PrintString(command);
+    int output = MikosLib_StoI_Map_EvaluateKey(&CommandMap,command,InputSize);
+    Mikos_Free(command);
+    return output;
 }
 
 char *Shell_RepairDataSegmentOffset(char *string)
 {
     return (char*)((unsigned int)DataSegmentAddress + (unsigned int)string);
+}
+
+ExitCode_type Shell_Test(char *userInput)
+{
+    Mikos_PrintString(Shell_RepairDataSegmentOffset("Hello Moto \n"));
+    return Continue;
 }

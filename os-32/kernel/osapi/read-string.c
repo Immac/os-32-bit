@@ -24,7 +24,7 @@ void Osapi_ReadString(struct regs* r)
         {
         case Backspace:
             i = Math_Max(0,--i);
-            buffer[i] = 0;
+            kprintf("%c%c%c",0x08,0x00,0x08);
             break;
         case Enter:
             current_char = '\n';
