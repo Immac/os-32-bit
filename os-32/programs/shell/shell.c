@@ -35,7 +35,11 @@ ExitCode_type Shell_UserRequest(char *userInput);
 ExitCode_type Shell_Test(char *userInput);
 
 ExitCode_type PerformAction(char *userInput);
-
+/**
+*   This is the constructor for the Shell, should only be called once.
+*   \param dataSegmentAddress This parameter is used to offset anything in the .data
+*   that does not get offset because of how the program is loaded into memory
+*/
 int Shell_Construct(char *dataSegmentAddress)
 {
     DataSegmentAddress = dataSegmentAddress;
@@ -50,7 +54,6 @@ int Shell_Construct(char *dataSegmentAddress)
         CommandEntries[i].value = i;
     }
     MikosLib_StoI_Map_Construct(&CommandMap,CommandEntries);
-
 }
 
 int Shell_MainLoop()
@@ -70,14 +73,12 @@ int Shell_MainLoop()
 
 ExitCode_type PerformAction(char *user_input)
 {
-
     int command = GetCommand(user_input);
     if (command != -1)
     {
-        Mikos_PrintInt(command);
         return Actions[command](user_input);
     }
-
+    Mikos_PrintString("\n");
     Mikos_PrintString(user_input);
     Mikos_PrintString(Shell_RepairDataSegmentOffset(" is not a valid command!\n"));
     return Continue;
@@ -104,6 +105,6 @@ char *Shell_RepairDataSegmentOffset(char *string)
 
 ExitCode_type Shell_Test(char *userInput)
 {
-    Mikos_PrintString(Shell_RepairDataSegmentOffset("Hello Moto \n"));
+    Mikos_PrintString(Shell_RepairDataSegmentOffset("This is a test! \n"));
     return Continue;
 }

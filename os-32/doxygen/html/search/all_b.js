@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['lba',['lba',['../structide__device.html#ab20f0f4ad34f703dedd63f34786b423a',1,'ide_device']]],
+  ['leftaltflag',['LeftAltFlag',['../keyboard_8c.html#a58ef3c07b417111d050dfc68109a6444a7f2590e13b4deffdea33567f87803035',1,'keyboard.c']]],
+  ['leftctrlflag',['LeftCtrlFlag',['../keyboard_8c.html#a58ef3c07b417111d050dfc68109a6444a68ffc147e3664544d3af8e555d2e0abc',1,'keyboard.c']]],
+  ['leftshiftflag',['LeftShiftFlag',['../keyboard_8c.html#a58ef3c07b417111d050dfc68109a6444a884ae4caacb6919515dd639cd5f7b9b2',1,'keyboard.c']]],
+  ['len',['len',['../structmultiboot__mmap__entry.html#a7961b7d1c0e1e5d7bd4cd24f92302cb6',1,'multiboot_mmap_entry::len()'],['../system_8h.html#accdb2dff228b7a3ea4c3f61937a82412',1,'len():&#160;system.h']]],
+  ['light_5fblue',['LIGHT_BLUE',['../screen_8h.html#a959d1249a76cfbd90fc6d96e2a9744e9',1,'screen.h']]],
+  ['light_5fcyan',['LIGHT_CYAN',['../screen_8h.html#a15e616ad647add2891b6c7ec6a1e47f1',1,'screen.h']]],
+  ['light_5fgray',['LIGHT_GRAY',['../screen_8h.html#a9663e02e20b5b578e6a31adae265cb88',1,'screen.h']]],
+  ['light_5fgreen',['LIGHT_GREEN',['../screen_8h.html#a5a7142ee95ebc63218ed3aac2ae06b13',1,'screen.h']]],
+  ['light_5fmagenta',['LIGHT_MAGENTA',['../screen_8h.html#af98a47a241abb10ccec0339c7a8a8c2e',1,'screen.h']]],
+  ['light_5fred',['LIGHT_RED',['../screen_8h.html#a664c8f5b9d90f79a49a16960b9ccedba',1,'screen.h']]],
+  ['limit',['limit',['../structidt__ptr.html#aff506a142b3e7718fdcebfaa4454b30f',1,'idt_ptr::limit()'],['../structgdt__data.html#a029bd9dcabba11dd83ff39a6a5b31617',1,'gdt_data::limit()'],['../idt_8c.html#ab28e82ae69032cb4ad3ec3a0be3d7129',1,'limit():&#160;idt.c'],['../gdt_8c.html#ab28e82ae69032cb4ad3ec3a0be3d7129',1,'limit():&#160;gdt.c']]],
+  ['limit_5flow',['limit_low',['../structgdt__entry.html#ad1cb239b48c0bfb34a017d5deb87e3ff',1,'gdt_entry::limit_low()'],['../gdt_8c.html#aa7ae5b5a918e00776ff07fb1c58a348d',1,'limit_low():&#160;gdt.c']]],
+  ['lockflags',['lockFlags',['../struct_keyboard_status.html#a5ac92103ec38b5f6ce76b626df6b5852',1,'KeyboardStatus::lockFlags()'],['../keyboard_8c.html#aa47e22df6e44138d6cf9169d6b21b120',1,'LockFlags():&#160;keyboard.c']]],
+  ['lockflags_5ftype',['LockFlags_type',['../keyboard_8c.html#a3ec8b89503c701b47fdaf51ad310933b',1,'keyboard.c']]],
+  ['loffset_5ft',['loffset_t',['../types_8h.html#acfadb060e0aab1a02c086fb52d830bea',1,'types.h']]],
+  ['low_5flevel_2ec',['low_level.c',['../low__level_8c.html',1,'']]],
+  ['low_5flevel_2eh',['low_level.h',['../low__level_8h.html',1,'']]],
+  ['low_5fmem',['low_mem',['../structmultiboot__info.html#ad7edb907a064e925e8ffb265cb87678a',1,'multiboot_info']]],
+  ['lshift_5fprs',['LSHIFT_PRS',['../keyboard_8c.html#a278446beb032cfd4f2dee7a82e544cf8',1,'keyboard.c']]],
+  ['lshift_5frls',['LSHIFT_RLS',['../keyboard_8c.html#a60989e51f4195771477c68f30a059335',1,'keyboard.c']]]
+];
