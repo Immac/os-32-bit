@@ -1,9 +1,9 @@
 # Automatically expand to a list of existing files that
 # match the patterns
-C_SOURCES = $(wildcard kernel/*.c drivers/*.c)
-HEADERS = $(wildcard kernel/*.h drivers/*.h)
+C_SOURCES = $(wildcard kernel/*.c kernel/*/*.c drivers/*.c util/*.c)
+HEADERS = $(wildcard kernel/*.h kernel/*/*.h drivers/*.h util/*.h )
 OBJ = ${C_SOURCES:.c=.o}
-INCLUDE = -Ikernel/ -Idrivers/
+INCLUDE = -Ikernel/ -Idrivers/ -Iutil/
 
 C_FLAGS = -O1 -nostdinc -nostdlib -ffreestanding -fno-stack-protector -std=gnu99 -m32
 CC = gcc
@@ -13,7 +13,8 @@ all: os-image
 
 # Run bochs to simulate booting of our code.
 run: all
-	#./prepare-hd1-with-kernel.elf.sh
+	#echo "Make sure /media/immac/1788-59D0 is accessible"
+	sudo cp kernel.elf /media/immac/1788-59D01
 	bochs -f opsys.bxrc -q
 
 os-image: kernel.elf

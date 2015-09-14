@@ -24,11 +24,11 @@ static uint32_t *mm_memory_bitmap = 0;
 int mm_bitmap_get_first_free()
 {
     int i = 0;
-    
+
     while (BITTEST(mm_memory_bitmap, i) && (i < mm_block_count)) {
         i++;
     }
-    
+
     return (i==mm_block_count)? -1 : i;
 }
 
@@ -41,27 +41,27 @@ int mm_bitmap_get_n_free(size_t count)
 
     if (count == 1)
         return mm_bitmap_get_first_free();
-    
+
     int i = 0, start_index, bcount = 0;
-    
+
     do {
         while (BITTEST(mm_memory_bitmap, i) && (i < mm_block_count)) {
             i++;
         }
-        
+
         if (i == mm_block_count)
             return -1;
-        
+
         start_index = i;
         while (!BITTEST(mm_memory_bitmap, i) && (i < mm_block_count)) {
             bcount++; i++;
-            
+
             if (bcount == count)
                 break;
         }
-        
+
     } while (bcount < count);
-    
+
     return start_index;
 }
 
@@ -161,7 +161,7 @@ void mm_release_frames(void* p, size_t count)
     physical_addr_t addr = (physical_addr_t) p;
     int frame = addr / MM_BLOCK_SIZE;
     int i;
-    
+
     for (i = 0; i < count; i++)
         BITCLEAR(mm_memory_bitmap, frame + i);
 
@@ -239,6 +239,6 @@ physical_addr_t mm_get_pdbr()
     uint32_t result;
 
     asm ("movl %%cr3, %0" : "=r" (result) : );
-    
+
     return result;
 }
