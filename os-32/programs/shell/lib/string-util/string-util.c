@@ -21,7 +21,7 @@ int MikosLib_Util_StringEquals(char *me, char *other, unsigned int max)
     return !(MikosLib_Util_StringCompare(me,other,max));
 }
 
-char *MikosLib_Util_StringSubstring(char *me, char divisor, unsigned int max)
+char *MikosLib_Util_StringSubstring(char *me, char delimiter, unsigned int max)
 {
         char temp[max];
         MikosLib_Util_ArrayClear(temp,max);
@@ -29,7 +29,7 @@ char *MikosLib_Util_StringSubstring(char *me, char divisor, unsigned int max)
         for(i = 0; i < max ; i++)
         {
             temp[i] = me[i];
-            if (temp[i] == divisor || temp[i] == 0)
+            if (temp[i] == delimiter || temp[i] == 0)
             {
                 break;
             }

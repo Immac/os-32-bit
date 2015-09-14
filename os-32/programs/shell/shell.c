@@ -42,7 +42,7 @@ int Shell_Construct(char *dataSegmentAddress)
     Commands[Exit] = Shell_RepairDataSegmentOffset("exit");
     Commands[Test] = Shell_RepairDataSegmentOffset("test");
     Actions[Exit] = (void *)Shell_RepairDataSegmentOffset((char*)Shell_UserRequest);
-    Actions[Test] = (void *)Shell_RepairDataSegmentOffset((char*)Shell_Test);;
+    Actions[Test] = (void *)Shell_RepairDataSegmentOffset((char*)Shell_Test);
 
     for(int i = 0; i < CommandCount; i++)
     {
@@ -93,7 +93,6 @@ int GetCommand(char *userInput)
     char *command = MikosLib_Util_StringSubstring(userInput,' ',InputSize);
     Mikos_PrintString(command);
     int output = MikosLib_StoI_Map_EvaluateKey(&CommandMap,command,InputSize);
-    //Mikos_Free(command);
     return output;
 }
 
