@@ -93,6 +93,7 @@ int GetCommand(char *userInput)
     char *command = MikosLib_Util_StringSubstring(userInput,' ',InputSize);
     Mikos_PrintString(command);
     int output = MikosLib_StoI_Map_EvaluateKey(&CommandMap,command,InputSize);
+    Mikos_Free(command);
     return output;
 }
 
