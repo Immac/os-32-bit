@@ -49,6 +49,7 @@ void *Mikos_Malloc(unsigned int nBytes)
          : "a"(syscall_code), "b"(nBytes)
          :
          );
+    return output;
 }
 
 void Mikos_Free(void *target)

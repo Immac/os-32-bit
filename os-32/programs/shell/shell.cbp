@@ -41,6 +41,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="lib/map-util/map.h" />
+		<Unit filename="lib/math/mikos-math.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lib/math/mikos-math.h" />
 		<Unit filename="lib/string-util/string-util.c">
 			<Option compilerVar="CC" />
 		</Unit>

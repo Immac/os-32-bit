@@ -21,7 +21,7 @@ int MikosLib_Util_StringEquals(char *me, char *other, unsigned int max)
     return !(MikosLib_Util_StringCompare(me,other,max));
 }
 
-char *MikosLib_Util_StringSubstring(char *me, char delimiter, unsigned int max)
+char *Internal_StringSubstring(char *me, char delimiter, unsigned int max)
 {
         char temp[max];
         MikosLib_Util_ArrayClear(temp,max);
@@ -35,14 +35,27 @@ char *MikosLib_Util_StringSubstring(char *me, char delimiter, unsigned int max)
             }
         }
         temp[i] = 0;
-            Mikos_PrintInt(999);
-        Mikos_PrintString(temp);
-            Mikos_PrintInt(999);
-        char *substring = Mikos_Malloc(i * sizeof(substring));
+        char *substring = Mikos_Malloc(i * sizeof(char *));
         MikosLib_Util_StringCopy(substring,temp,i+1);
-        Mikos_PrintString(substring);
-            Mikos_PrintInt(999);
         return substring;
+}
+
+/**
+*   Free the \return string once it's no longer needed.
+*/
+char *MikosLib_Util_StringSubstring( char *me, char delimiter, unsigned int max, unsigned int offset)
+{
+    offset = MikosLib_Math_UnsignedMin(max,offset);
+    max = max - offset;
+    char *string = &me[offset];
+    return Internal_StringSubstring(string,delimiter,max);
+}
+
+int MikosLib_StringLength(char *me)
+{
+    int length;
+    for(length = 0; me[length] != 0; length++ );
+    return length;
 }
 
 void MikosLib_Util_StringCopy(char *me,char *other,unsigned int max)
@@ -55,7 +68,6 @@ void MikosLib_Util_StringCopy(char *me,char *other,unsigned int max)
         {
             break;
         }
-
     }
     if(i == max - 1)
     {
