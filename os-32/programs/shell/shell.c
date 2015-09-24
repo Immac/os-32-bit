@@ -1,6 +1,7 @@
 #include "shell.h"
 
 char *Shell_RepairDataSegmentOffset(char *string);
+char *GetArgument(char *userInput,int argumentNumber);
 int GetCommand(char *userInput);
 #define InputSize 80 // static const int InputSize = 80;
 
@@ -8,6 +9,7 @@ typedef enum Command
 {
     Exit,
     Test,
+    FileOpen,
     CommandCount
 } Command_type;
 
@@ -17,6 +19,7 @@ typedef struct
     char *NewLine;
     char *InvalidCommand;
     char *MikosShell;
+    char *NotYetImplemented;
 } Vocabulary_type;
 Vocabulary_type Vocabulary;
 
@@ -43,27 +46,24 @@ Shell_Map CommandMap;
 ExitCode_type (*Actions[CommandCount])(char *userInput);
 ExitCode_type Shell_UserRequest(char *userInput);
 ExitCode_type Shell_Test(char *userInput);
-
 ExitCode_type PerformAction(char *userInput);
-/**
-*   This is the constructor for the Shell, should only be called once.
-*   \param dataSegmentAddress This parameter is used to offset anything in the .data
-*   that does not get offset because of how the program is loaded into memory
-*/
+ExitCode_type Shell_OpenFile(char *userInput);
+
 int Shell_Construct(char *dataSegmentAddress)
 {
     DataSegmentAddress = dataSegmentAddress;
     Commands[Exit] = Shell_RepairDataSegmentOffset("exit");
     Commands[Test] = Shell_RepairDataSegmentOffset("test");
+    Commands[FileOpen] = Shell_RepairDataSegmentOffset("f-open");
 
-    Vocabulary.WelcomeMessage1 = Shell_RepairDataSegmentOffset("Welcome to MikOS-32!\n");
+    Vocabulary.WelcomeMessage1 = Shell_RepairDataSegmentOffset("Welcome to MikOS II [Sanae]!\n");
     Vocabulary.NewLine = Shell_RepairDataSegmentOffset("\n");
     Vocabulary.InvalidCommand = Shell_RepairDataSegmentOffset("The \"Command\" entered was not found, please try again! The command was: ");
-    Vocabulary.MikosShell = Shell_RepairDataSegmentOffset("\nMikOS ~>");
-
+    Vocabulary.MikosShell = Shell_RepairDataSegmentOffset("\nMikOS >");
+    Vocabulary.NotYetImplemented = Shell_RepairDataSegmentOffset("\nThis \"Command\" is yet to be Implemented!: ");
     Actions[Exit] = (void *)Shell_RepairDataSegmentOffset((char*)Shell_UserRequest);
     Actions[Test] = (void *)Shell_RepairDataSegmentOffset((char*)Shell_Test);
-
+    Actions[FileOpen] = (void *)Shell_RepairDataSegmentOffset((char*)Shell_OpenFile);
 
     for(int i = 0; i < CommandCount; i++)
     {
@@ -126,8 +126,7 @@ ExitCode_type Shell_Test(char *userInput)
 {
     char *command = MikosLib_Util_StringSubstring(userInput,' ',InputSize,0);
     int command_size = MikosLib_StringLength(command);
-    char *arg = MikosLib_Util_StringSubstring(userInput,' ',InputSize - command_size,command_size + 1);
-
+    char *arg = GetArgument(userInput,2);
     Mikos_PrintString(Shell_RepairDataSegmentOffset("\nThe argument is: "));
     Mikos_PrintString(arg);
     Mikos_PrintString(Vocabulary.NewLine);
@@ -135,6 +134,12 @@ ExitCode_type Shell_Test(char *userInput)
     Mikos_Free(command);
     Mikos_Free(arg);
 
+    return Continue;
+}
+
+ExitCode_type Shell_OpenFile(char *userInput)
+{
+    Mikos_PrintString(Vocabulary.NotYetImplemented);
     return Continue;
 }
 
@@ -150,11 +155,11 @@ char *GetArgument(char *userInput,int argumentNumber)
     char *command = MikosLib_Util_StringSubstring(userInput,' ',InputSize,0);
     int command_size = MikosLib_StringLength(command);
     char* arg = command;
-    int arg_offset = command_size;
+    int arg_offset = command_size + 1;
     for(int i =0; i < argumentNumber; i++)
     {
-        arg = MikosLib_Util_StringSubstring(userInput,' ',InputSize - arg_offset,arg_offset + 1);
-        arg_offset += MikosLib_StringLength(arg);
+        arg = MikosLib_Util_StringSubstring(userInput,' ',InputSize - arg_offset,arg_offset);
+        arg_offset += MikosLib_StringLength(arg) + 1;
     }
 
     Mikos_Free(command);

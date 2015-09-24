@@ -19,7 +19,6 @@ void *malloc(size_t nBytes)
     }
 
     for (p = prevp->s.ptr ;; prevp = p, p = p->s.ptr) {
-       // kprintf("p->s.size A: %u\n",p->s.size);
         if (p->s.size >= nUnits) {
             if (p->s.size == nUnits)
                 prevp->s.ptr = p->s.ptr;
@@ -29,10 +28,6 @@ void *malloc(size_t nBytes)
                 p->s.size = nUnits;
             }
             freep = prevp;
-      //      kprintf("p: %p\n",p);
-
-    //    kprintf("freep: %p\n",freep);
-
             return (void*)(p + 1);
         }
         if (p == freep)
@@ -49,7 +44,6 @@ union Header *moreCore(unsigned int nUnits) {
     unsigned int alignmentUnitsToFrames(unsigned int nUnits);
     unsigned int framesToAlignmentUnits(unsigned int frames);
     unsigned int nFrames = alignmentUnitsToFrames(nUnits);
-    kprintf("Additional memory is required!");
     cp = mm_alloc_frames(nFrames);
     if (cp == (char *) -1)
         return NULL;
@@ -81,7 +75,10 @@ void free(void *ap) {
     freep = p;
 }
 
-/*nUnits to frames*/
+/**
+*Function \name alignmentUnitsToFrames
+*this function takes \param alignment_units to and transforms them into \return frames
+*/
 unsigned int alignmentUnitsToFrames(size_t nUnits) {
     return (nUnits * sizeof(union Header))/MALLOC_BLOCK_SIZE + 1;
 }

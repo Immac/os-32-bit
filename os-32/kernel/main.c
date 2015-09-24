@@ -12,16 +12,15 @@ void main(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
 {
     initialize_kernel(mbinfo,kernel_end_addr);
     sti();
-    kprintf("Welcome to MikOS II:\n");
 
     if (CHECK_FLAG(mbinfo->flags,3))
     {
-        kprintf("mbinfo->flags check ");
+        kprintf("mbinfo->flags: %p\n",mbinfo->flags);
         if(mbinfo->mods_count == 1)
         {
             MultibootList_type *mods_list = (MultibootList_type*)mbinfo->mods_addr;
             call_module_t start_program = (call_module_t) mods_list[0].mod_start;
-            kprintf("start_program: %p\n",start_program);
+            kprintf("Shell found at: %p\n",start_program);
             start_program((char*)start_program);
         }
     }
