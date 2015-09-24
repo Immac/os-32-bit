@@ -40,6 +40,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="drivers/fat16.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="drivers/fat16.h" />
 		<Unit filename="drivers/ide.c">
 			<Option compilerVar="CC" />
 		</Unit>

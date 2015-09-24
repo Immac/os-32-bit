@@ -4,7 +4,7 @@ typedef struct
 {
     unsigned char BS_jmpBoot[3];
     unsigned char BS_OEMName[8];
-    unsigned short BPB_BytesPerSecond;
+    unsigned short BPB_BytesPerSector;
     unsigned char BPB_SectorsPerCluster;
     unsigned short BPB_ReservedSectorCount;
     unsigned char BPB_NumberOfFatStructures;
@@ -25,5 +25,7 @@ typedef struct
     unsigned char BS_FyleSystemType[8];
 
 } BsBpb;
+
+
 
 #endif // FAT16_DRIVER
