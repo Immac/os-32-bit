@@ -5,6 +5,7 @@
 #include <keyboard.h>
 #include "syscall-handler.h"
 #include "osapi/syscall-interface.h"
+#include <filesystem.h>
 
 void initialize_kernel(struct multiboot_info *mbinfo, uint32_t kernel_end_addr);
 
@@ -44,6 +45,7 @@ void initialize_kernel(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
     irq_init();
     isrs_init();
     init_keyboard();
+    init_ide_devices();
     size_t totalMemory = (mbinfo->low_mem + mbinfo->high_mem + 1024);
     multiboot_memory_map_t *mmap_ptr = (multiboot_memory_map_t*) mbinfo->mmap_addr;
     multiboot_memory_map_t *mmap_end = (multiboot_memory_map_t*) (mbinfo->mmap_addr + mbinfo->mmap_length);
@@ -66,5 +68,5 @@ void initialize_kernel(struct multiboot_info *mbinfo, uint32_t kernel_end_addr)
     mm_mark_region_used(KERNEL_BASE_ADDR, kernelSize + mm_get_bitmap_size());
     InitSyscallInterfaceHandlers();
     irq_install_handler(1,keyboard_handler);
-
+    InitMbr();
 }

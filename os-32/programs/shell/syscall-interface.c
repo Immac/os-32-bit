@@ -61,3 +61,13 @@ void Mikos_Free(void *target)
          :
          );
 }
+
+void Mikos_ListDirectories(unsigned int clusterStart)
+{
+        int syscall_code = ListDirectory;
+        asm("int $128"
+            :
+            : "a"(syscall_code), "b"(clusterStart)
+            :
+        );
+}

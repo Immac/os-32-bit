@@ -11,6 +11,7 @@ void InitSyscallInterfaceHandlers()
     handlers[PrintPointer] = Osapi_PrintPointer;
     handlers[Malloc] = Osapi_Malloc;
     handlers[Free] = Osapi_Free;
+    handlers[ListDirectory] = Osapi_ListDirectory;
 }
 
 void Interrupt0x80Handler(struct regs *r)

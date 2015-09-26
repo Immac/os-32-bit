@@ -40,10 +40,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="drivers/fat16.c">
+		<Unit filename="drivers/filesystem.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="drivers/fat16.h" />
+		<Unit filename="drivers/filesystem.h" />
 		<Unit filename="drivers/ide.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -85,6 +85,10 @@
 		<Unit filename="kernel/mem_mgmt.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="kernel/osapi/filesystem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="kernel/osapi/filesystem.h" />
 		<Unit filename="kernel/osapi/malloc.c">
 			<Option compilerVar="CC" />
 		</Unit>

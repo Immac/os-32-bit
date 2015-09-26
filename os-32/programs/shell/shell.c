@@ -9,6 +9,7 @@ typedef enum Command
 {
     Exit,
     Test,
+    Ls,
     FileOpen,
     CommandCount
 } Command_type;
@@ -48,12 +49,14 @@ ExitCode_type Shell_UserRequest(char *userInput);
 ExitCode_type Shell_Test(char *userInput);
 ExitCode_type PerformAction(char *userInput);
 ExitCode_type Shell_OpenFile(char *userInput);
+ExitCode_type Shell_List(char *userInput);
 
 int Shell_Construct(char *dataSegmentAddress)
 {
     DataSegmentAddress = dataSegmentAddress;
     Commands[Exit] = Shell_RepairDataSegmentOffset("exit");
     Commands[Test] = Shell_RepairDataSegmentOffset("test");
+    Commands[Ls] = Shell_RepairDataSegmentOffset("ls");
     Commands[FileOpen] = Shell_RepairDataSegmentOffset("f-open");
 
     Vocabulary.WelcomeMessage1 = Shell_RepairDataSegmentOffset("Welcome to MikOS II [Sanae]!\n");
@@ -61,9 +64,11 @@ int Shell_Construct(char *dataSegmentAddress)
     Vocabulary.InvalidCommand = Shell_RepairDataSegmentOffset("The \"Command\" entered was not found, please try again! The command was: ");
     Vocabulary.MikosShell = Shell_RepairDataSegmentOffset("\nMikOS >");
     Vocabulary.NotYetImplemented = Shell_RepairDataSegmentOffset("\nThis \"Command\" is yet to be Implemented!: ");
+
     Actions[Exit] = (void *)Shell_RepairDataSegmentOffset((char*)Shell_UserRequest);
     Actions[Test] = (void *)Shell_RepairDataSegmentOffset((char*)Shell_Test);
     Actions[FileOpen] = (void *)Shell_RepairDataSegmentOffset((char*)Shell_OpenFile);
+    Actions[Ls] = (void *)Shell_RepairDataSegmentOffset((char*)Shell_List);
 
     for(int i = 0; i < CommandCount; i++)
     {
@@ -134,6 +139,12 @@ ExitCode_type Shell_Test(char *userInput)
     Mikos_Free(command);
     Mikos_Free(arg);
 
+    return Continue;
+}
+
+ExitCode_type Shell_List(char *userInput)
+{
+    Mikos_ListDirectories(0);
     return Continue;
 }
 

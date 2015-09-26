@@ -7,4 +7,5 @@ void Mikos_PrintInt(int integer);
 void Mikos_PrintPointer(void *pointer);
 void *Mikos_Malloc(unsigned int nBytes);
 void Mikos_Free(void *target);
+void Mikos_ListDirectories(unsigned int clusterStart);
 #endif // SYSCALL_INTERFACE_H

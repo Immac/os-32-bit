@@ -11,6 +11,7 @@ typedef enum SyscallCode
     PrintPointer,
     Malloc,
     Free,
+    ListDirectory,
     SyscallCount
 } SyscallCode_type;
 
