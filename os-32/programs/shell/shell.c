@@ -4,7 +4,7 @@ char *Shell_RepairDataSegmentOffset(char *string);
 char *GetArgument(char *userInput,int argumentNumber);
 int GetCommand(char *userInput);
 #define InputSize 80 // static const int InputSize = 80;
-//Direc
+
 DirectoryRecord *currentDir = 0;
 typedef enum Command
 {

@@ -17,6 +17,15 @@ void Osapi_ListDirectory(regs_t *r)
     }
 }
 
+void Osapi_GetCurrentDirectory(regs_t *r)
+{
+    unsigned int first_cluster = r->ebx;
+    unsigned int address = ComputeDirectotyAddress(first_cluster);
+    DirectoryRecord *dir = malloc(sizeof(DirectoryRecord) * 16 * FileSystem_SectorsPerCluster);
+    ide_read_blocks(0, address, FileSystem_SectorsPerCluster, dir);
+    r->eax = (unsigned int)dir;
+}
+
 unsigned int ComputeDirectotyAddress(unsigned int cluster)
 {
     return cluster == 0
