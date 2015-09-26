@@ -19,25 +19,4 @@ void InitMbr()
     int directory_record_size = sizeof(DirectoryRecord);
     FileSystem_DataEntry = FileSystem_RootDirectoryAddress + fbr.BPB_RootEntryCount * directory_record_size/bytes_per_sector;
     FileSystem_SectorsPerCluster = fbr.BPB_SectorsPerCluster;
-    //kprintf("\n%u\n", DataEntry);
-    /*ide_read_blocks(0,RootDirectoryAddress,1,dir);
-
-    for(int i = 0; i < 16; i++)
-    {
-        if(dir[i].Attributes == 0x20 || dir[i].Attributes == 0x10)
-        {
-            kprintf("%s: %u \n",dir[i].Name, dir[i].FirstClusterLow);
-        }
-    }*/
 }
-
-//void read()
-
-/*
-File *FileSystem_FileOpen(char *fileName, ErrorNumber* errorNumber)
-{
-
-    ErrorNumber = NoError;
-    return 0;
-}
-*/

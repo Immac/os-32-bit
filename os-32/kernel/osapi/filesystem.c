@@ -2,8 +2,8 @@
 unsigned int ComputeDirectotyAddress(unsigned int cluster);
 void Osapi_ListDirectory(regs_t *r)
 {
-    unsigned int clusterStart = r->ebx;
-    unsigned int address = ComputeDirectotyAddress(clusterStart);
+    unsigned int first_cluster = r->ebx;
+    unsigned int address = ComputeDirectotyAddress(first_cluster);
 
     DirectoryRecord dir[16*FileSystem_SectorsPerCluster];
     ide_read_blocks(0, address, FileSystem_SectorsPerCluster, dir);

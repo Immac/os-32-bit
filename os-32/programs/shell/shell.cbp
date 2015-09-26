@@ -37,6 +37,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="lib/array-util/array-fill.h" />
+		<Unit filename="lib/filesystem/filesystem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lib/filesystem/filesystem.h" />
 		<Unit filename="lib/map-util/map.c">
 			<Option compilerVar="CC" />
 		</Unit>

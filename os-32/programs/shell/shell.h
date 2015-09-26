@@ -4,7 +4,7 @@
 #include "lib/array-util/array-clear.h"
 #include "syscall-interface.h"
 #include "lib/map-util/map.h"
-
+#include "lib/filesystem/filesystem.h"
 /**
 *   This is the constructor for the Shell, should only be called once.
 *   \param dataSegmentAddress This parameter is used to offset anything in the .data
